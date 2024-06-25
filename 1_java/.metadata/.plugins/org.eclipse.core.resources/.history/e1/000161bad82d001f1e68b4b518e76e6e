@@ -1,0 +1,7 @@
+package Function;
+
+public class UserInfo {
+	public boolen Login(String id, String password) {
+		return false;
+	}
+}
