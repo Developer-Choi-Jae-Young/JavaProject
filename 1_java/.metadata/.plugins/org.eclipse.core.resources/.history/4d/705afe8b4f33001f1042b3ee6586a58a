@@ -1,0 +1,16 @@
+package kh.study.cjy.control;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.model.User;
+
+public class UserControl {
+	private List<User> userList = new ArrayList<User>();
+	
+	public boolean login() {
+		boolean returnValue = false;
+		
+		return returnValue;
+	}
+}

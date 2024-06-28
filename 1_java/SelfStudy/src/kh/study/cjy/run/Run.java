@@ -4,10 +4,9 @@ import kh.study.cjy.view.View;
 
 public class Run {
 
-	public static void main(String[] args) {
-		System.out.println("ÇÁ·Î±×·¥ ½ÃÀÛ ...");
-		
+	public static void main(String[] args) {	
 		new View();
+		
 		/*
 		Functional fi = new Functional();
 		List<Object> o = fi.ResultSetToArray(fi.CallSql(fi.Connect(),"Select * from User;"), User.class, null);
@@ -20,5 +19,7 @@ public class Run {
 			System.out.println(u.getName());
 			System.out.println(u.getPassword());
 		}*/
+
+		//ì¶”ê°€í•œ ë‚´ìš©ìž…ë‹ˆë‹¤.
 	}
 }

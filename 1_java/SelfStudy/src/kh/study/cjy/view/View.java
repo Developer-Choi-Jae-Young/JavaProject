@@ -4,10 +4,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import etc.Banner;
+import kh.study.cjy.control.UserControl;
+
 public class View {
 	private Scanner sc = new Scanner(System.in);
-
+	private UserControl uc = new UserControl();
 	public View() {
+		Banner banner = new Banner();
+		banner.print();
+		
 		while (true) {
 			if (mainView())
 				break;
@@ -25,11 +31,11 @@ public class View {
 		System.out.print("선택 : ");
 		int num = sc.nextInt();
 		sc.nextLine();
-
+		
 		switch (num) {
 		case 1:
 			if (loginView()) {
-				loginAfterView();
+				loginAfterView(uc.getType());
 			}
 			break;
 		case 2:
@@ -59,7 +65,7 @@ public class View {
 		System.out.println("======================================");
 
 		String result = "Result : ";
-		if (true) {
+		if (uc.login(id, password)) {
 			result += "Login Success";
 			returnValue = true;
 		} else {
@@ -91,7 +97,7 @@ public class View {
 		default:
 			break;
 		}
-
+		
 		return returnValue;
 	}
 
@@ -105,39 +111,61 @@ public class View {
 		String password = sc.nextLine();
 		System.out.print("Name : ");
 		String name = sc.nextLine();
+		System.out.print("Age : ");
+		int age = sc.nextInt();
+		sc.nextLine();
+		System.out.print("Phone : ");
+		String phone = sc.nextLine();
+		System.out.print("Email : ");
+		String email = sc.nextLine();
 		System.out.print("Gender : ");
 		char gender = sc.nextLine().charAt(0);
 		System.out.println("======================================");
-
+		uc.registUser(id, password, name, age, gender, phone, email, type);
+		
+		System.out.println("회원가입을 완료하였습니다.");
 		return returnValue;
 	}
 
-	private boolean loginAfterView() {
+	private boolean loginAfterView(String type) {
 		boolean returnValue = false;
+		
+		boolean bflag = false;
+		
+		while(true) {
+			if(bflag) break;
+			
+			System.out.println("======================================");
+			System.out.println("1. 내정보");
+			System.out.println("2. 자습현황");
+			System.out.println("3. 로그아웃");
+			if (uc.getType().equals("ADMIN")) System.out.println("4. 회원가입 요청처리"); // 관리자라면
+			System.out.println("======================================");
+			System.out.print("선택 : ");
+			int num = sc.nextInt();
+			sc.nextLine();
 
-		System.out.println("======================================");
-		System.out.println("1. 내정보");
-		System.out.println("2. 자습현황");
-		System.out.println("3. 로그아웃");
-		if (false) System.out.println("4. 회원가입 요청처리"); // 관리자라면
-		System.out.println("======================================");
-		System.out.print("선택 : ");
-		int num = sc.nextInt();
-		sc.nextLine();
-
-		switch (num) {
-		case 1:
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		default:
-			break;
+			switch (num) {
+			case 1:
+				if(printMyInformation()) {
+					bflag = true;
+				}
+				break;
+			case 2:
+				printTodaySelfStudySchdule(type);
+				break;
+			case 3:
+				System.out.println("로그아웃 하여 메인으로 돌아갑니다.");
+				bflag = true;
+				break;
+			case 4:
+				if(uc.getType().equals("ADMIN")) acceptRequestRegistUser();//관리자만 가능
+				break;
+			default:
+				break;
+			}
 		}
-
+		
 		return returnValue;
 	}
 
@@ -148,7 +176,7 @@ public class View {
 
 		System.out.println("======================================");
 		// 관리자면 날짜별로 기록 확인할수 있도록 아니면 그냥 금일 날짜에 대한 기록만 출력
-		if (false) {
+		if (!uc.getType().equals("ADMIN")) {
 			//오늘기록 print
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
@@ -165,5 +193,47 @@ public class View {
 				System.out.println("오늘보다 날짜가 더 큽니다. 다시 한번 확인해주세요.");
 			}
 		}
+	}
+	
+	private boolean printMyInformation() {
+		boolean returnValue = false;
+		
+		System.out.println("======================================");
+		System.out.println("ID : " + uc.getId());
+		System.out.println("Name : " + uc.getName());
+		System.out.println("Gender : "+ uc.getGender());
+		System.out.println("Email : "+ uc.getEmail());
+		System.out.println("Phone : "+ uc.getPhone());
+		System.out.println("======================================");
+		
+		System.out.print("비밀번호를 바꾸시겠습니까?(y/n) : ");
+		char select = sc.next().charAt(0);
+		sc.nextLine();
+		
+		if(select == 'y' || select == 'Y') {
+			System.out.print("현재 Password : ");
+			String currentPassword = sc.nextLine();
+			System.out.print("바꿀 Password : ");
+			String changePassword = sc.nextLine();
+			uc.changePassword(currentPassword, changePassword);
+			System.out.println("비밀번호가 정상적으로 바뀌었습니다.");
+			returnValue = true;
+		} else {
+			System.out.println("비밀번호가 변경을 취소하여 전으로 돌아갑니다.");
+		}
+		
+		return returnValue;
+	}
+	
+	private void acceptRequestRegistUser() {
+		System.out.println("======================================");
+		//회원가입 요청 리스트 출력
+		System.out.println("======================================");
+		
+		System.out.print("회원가입 수락할 번호 : ");
+		int num = sc.nextInt();
+		sc.next();
+		
+		//인덱스 찾아가서 해당 인덱스의 정보만 쿼리문으로 insert하기
 	}
 }

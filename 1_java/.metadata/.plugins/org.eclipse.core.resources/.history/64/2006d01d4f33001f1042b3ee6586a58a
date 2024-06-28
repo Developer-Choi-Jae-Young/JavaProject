@@ -1,0 +1,9 @@
+package kh.study.cjy.control;
+
+import java.util.ArrayList;
+
+import kh.study.cjy.model.User;
+
+public class UserControl {
+	//private Array<User> userList = new ArrayList<User>();
+}

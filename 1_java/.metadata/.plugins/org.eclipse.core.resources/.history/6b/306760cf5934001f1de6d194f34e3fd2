@@ -1,0 +1,65 @@
+package kh.study.cjy.run;
+
+import java.util.Scanner;
+
+import kh.study.cjy.view.View;
+
+public class Run {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        
+        String[] in = input.split(" ");
+                
+		int count = 0;
+		int max = 0;
+        int eyes = 0;
+        
+        for(int i = 0; i < in.length; i++) {
+            for(int j = 0; j < in.length; j++) {            	
+            	if(in[i] == in[j]) {
+            		count++;
+            	}
+            }
+            
+            if(max < count) {
+            	max = count;
+            	eyes = Integer.parseInt(in[i]);
+            } else {
+            	eyes = eyes > Integer.parseInt(in[i]) ? eyes : Integer.parseInt(in[i]);
+            }
+            count = 0;
+        }
+        
+        int price = 0;
+        switch(max) {
+            case 3 :
+                price = 10000 + (eyes) * 100;
+                break;
+            case 2:
+                price = 1000 + (eyes) * 100;
+                break;
+            default :
+                price = (eyes) * 100;
+                break;
+        }
+        
+        System.out.println(price);
+		
+		//new View();
+		
+		/*
+		Functional fi = new Functional();
+		List<Object> o = fi.ResultSetToArray(fi.CallSql(fi.Connect(),"Select * from User;"), User.class, null);
+		
+		for(Object oo : o) {
+			User u = (User)oo;
+			System.out.println(u.getAge());
+			System.out.println(u.getEmail());
+			System.out.println(u.getId());
+			System.out.println(u.getName());
+			System.out.println(u.getPassword());
+		}*/
+	}
+}
