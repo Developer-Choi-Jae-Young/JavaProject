@@ -1,11 +1,17 @@
 package kh.study.cjy.run;
 
+import java.util.Scanner;
+
 import kh.study.cjy.view.View;
 
 public class Run {
 
 	public static void main(String[] args) {
-	
+		Scanner sc = new Scanner(System.in);
+		
+	 	int a = sc.nextInt();
+		int b = sc.nextInt();
+		
 		//new View();
 		
 		/*
@@ -20,5 +26,7 @@ public class Run {
 			System.out.println(u.getName());
 			System.out.println(u.getPassword());
 		}*/
+
+		//異붽��븳 �궡�슜�엯�땲�떎.
 	}
 }

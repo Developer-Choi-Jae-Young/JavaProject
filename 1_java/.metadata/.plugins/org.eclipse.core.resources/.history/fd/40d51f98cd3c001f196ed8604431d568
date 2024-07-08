@@ -1,5 +1,7 @@
 package kh.study.cjy.run;
 
+import java.util.Scanner;
+
 import kh.study.cjy.view.View;
 
 public class Run {

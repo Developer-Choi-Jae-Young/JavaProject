@@ -5,7 +5,6 @@ import kh.study.cjy.view.View;
 public class Run {
 
 	public static void main(String[] args) {
-	
 		//new View();
 		
 		/*
@@ -20,5 +19,7 @@ public class Run {
 			System.out.println(u.getName());
 			System.out.println(u.getPassword());
 		}*/
+
+		//異붽��븳 �궡�슜�엯�땲�떎.
 	}
 }

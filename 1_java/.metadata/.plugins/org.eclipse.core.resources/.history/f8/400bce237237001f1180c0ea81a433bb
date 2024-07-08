@@ -1,11 +1,16 @@
 package kh.study.cjy.run;
 
+import java.time.LocalDate;
+
 import kh.study.cjy.view.View;
 
 public class Run {
 
 	public static void main(String[] args) {
-	
+		LocalDate ld = LocalDate.now();
+		System.out.println(ld.ofYearDay(2024, 1));
+		System.out.println(366 - ld.getDayOfYear());
+		
 		//new View();
 		
 		/*
@@ -20,5 +25,7 @@ public class Run {
 			System.out.println(u.getName());
 			System.out.println(u.getPassword());
 		}*/
+
+		//異붽��븳 �궡�슜�엯�땲�떎.
 	}
 }
