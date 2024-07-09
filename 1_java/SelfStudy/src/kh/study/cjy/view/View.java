@@ -2,17 +2,25 @@ package kh.study.cjy.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import etc.Banner;
+import etc.FileInputOutput;
+import etc.FileList;
 import kh.study.cjy.control.UserControl;
 
 public class View {
 	private Scanner sc = new Scanner(System.in);
 	private UserControl uc = new UserControl();
+	
 	public View() {
-		Banner banner = new Banner();
-		banner.print();
+		Banner.print();
+		
+		FileInputOutput fio = new FileInputOutput();
+		if(!fio.isExist(FileList.Setting_SQL.name())) {
+			fio.FileSave(FileList.Setting_SQL.name(), "SQL_META_DATA");
+		}
 		
 		while (true) {
 			if (mainView())
@@ -35,7 +43,7 @@ public class View {
 		switch (num) {
 		case 1:
 			if (loginView()) {
-				loginAfterView(uc.getType());
+				loginAfterView(uc.getUser().getType());
 			}
 			break;
 		case 2:
@@ -139,7 +147,7 @@ public class View {
 			System.out.println("1. 내정보");
 			System.out.println("2. 자습현황");
 			System.out.println("3. 로그아웃");
-			if (uc.getType().equals("ADMIN")) System.out.println("4. 회원가입 요청처리"); // 관리자라면
+			if (uc.getUser().getType().equals("ADMIN")) System.out.println("4. 회원가입 요청처리"); // 관리자라면
 			System.out.println("======================================");
 			System.out.print("선택 : ");
 			int num = sc.nextInt();
@@ -159,7 +167,7 @@ public class View {
 				bflag = true;
 				break;
 			case 4:
-				if(uc.getType().equals("ADMIN")) acceptRequestRegistUser();//관리자만 가능
+				if(uc.getUser().getType().equals("ADMIN")) acceptRequestRegistUser();//관리자만 가능
 				break;
 			default:
 				break;
@@ -176,7 +184,7 @@ public class View {
 
 		System.out.println("======================================");
 		// 관리자면 날짜별로 기록 확인할수 있도록 아니면 그냥 금일 날짜에 대한 기록만 출력
-		if (!uc.getType().equals("ADMIN")) {
+		if (!uc.getUser().getType().equals("ADMIN")) {
 			//오늘기록 print
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
@@ -199,11 +207,11 @@ public class View {
 		boolean returnValue = false;
 		
 		System.out.println("======================================");
-		System.out.println("ID : " + uc.getId());
-		System.out.println("Name : " + uc.getName());
-		System.out.println("Gender : "+ uc.getGender());
-		System.out.println("Email : "+ uc.getEmail());
-		System.out.println("Phone : "+ uc.getPhone());
+		System.out.println("ID : " + uc.getUser().getId());
+		System.out.println("Name : " + uc.getUser().getName());
+		System.out.println("Gender : "+ uc.getUser().getGender());
+		System.out.println("Email : "+ uc.getUser().getEmail());
+		System.out.println("Phone : "+ uc.getUser().getPhone());
 		System.out.println("======================================");
 		
 		System.out.print("비밀번호를 바꾸시겠습니까?(y/n) : ");

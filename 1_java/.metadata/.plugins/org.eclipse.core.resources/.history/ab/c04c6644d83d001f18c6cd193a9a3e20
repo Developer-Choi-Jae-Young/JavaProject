@@ -1,0 +1,10 @@
+package kh.study.cjy.dao;
+
+import database.Functional;
+
+public class UserDao extends Functional {
+	public boolean Login(String id, String password) {
+		
+		return false;
+	}
+}

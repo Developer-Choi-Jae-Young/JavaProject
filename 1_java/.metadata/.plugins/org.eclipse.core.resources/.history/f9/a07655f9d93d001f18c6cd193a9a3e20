@@ -1,0 +1,18 @@
+package kh.study.cjy.dao;
+
+import database.DataSource;
+import database.Functional;
+
+public class UserDao extends Functional {
+	public boolean Login(String id, String password) {
+		
+		try {
+			while(CallSql(DataSource.Connect(), "").next()) {
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return false;
+	}
+}

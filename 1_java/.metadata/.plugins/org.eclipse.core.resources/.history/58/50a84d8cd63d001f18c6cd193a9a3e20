@@ -1,0 +1,7 @@
+package kh.study.cjy.dao;
+
+import database.Functional;
+
+public class UserDao extends Functional{
+	
+}

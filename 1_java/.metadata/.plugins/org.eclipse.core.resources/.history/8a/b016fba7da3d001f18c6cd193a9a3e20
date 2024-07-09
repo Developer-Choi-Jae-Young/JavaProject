@@ -1,0 +1,24 @@
+package kh.study.cjy.dao;
+
+import java.sql.SQLException;
+
+import com.mysql.cj.exceptions.RSAException;
+
+import database.DataSource;
+import database.Functional;
+import kh.study.cjy.model.User;
+
+public class UserDao extends Functional {
+	public User findUser() {
+		
+		try {
+			while(CallSql(DataSource.Connect(), "").next()) {
+				rs.getInt(0);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+}

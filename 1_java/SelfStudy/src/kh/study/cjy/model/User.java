@@ -1,7 +1,5 @@
 package kh.study.cjy.model;
 
-import etc.Grade;
-
 public class User {
 	private Integer id;
 	private String userId;
@@ -12,15 +10,13 @@ public class User {
 	private char gender;
 	private String email;
 	private String type;
-	//private Grade grade;
 	
 	public User() {
 		
 	}
 	
 	public User(Integer id, String userId, String name, String password, Integer age, char gender, String phone, 
-			String email, String type
-			/*,Grade grade, ClassType classType*/) {
+			String email, String type) {
 		this.id = id;
 		this.userId = userId;
 		this.name = name;
@@ -30,8 +26,6 @@ public class User {
 		this.phone = phone;
 		this.email = email;
 		this.type = type;
-		//this.grade = grade;
-		//this.classType = classType;
 	}
 	
 	public int getId() {
@@ -81,13 +75,6 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public Grade getGrade() {
-		//return grade;
-		return null;
-	}
-	public void setGrade(Grade grade) {
-		//this.grade = grade;
 	}
 	public String getType() {
 		return type;

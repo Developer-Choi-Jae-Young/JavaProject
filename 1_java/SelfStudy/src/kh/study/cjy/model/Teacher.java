@@ -1,5 +1,5 @@
 package kh.study.cjy.model;
 
-public class Teacher {
-
+public abstract class Teacher {
+	
 }

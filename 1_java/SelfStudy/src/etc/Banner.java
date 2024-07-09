@@ -1,7 +1,7 @@
 package etc;
 
 public class Banner {
-	public void print() {
+	public static void print() {
 		System.out.println(
 				".----------------.  .----------------.  .----------------.  .----------------.   .----------------.  .----------------.  .----------------.  .----------------.  .----------------.");
 		System.out.println(

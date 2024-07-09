@@ -1,0 +1,67 @@
+package database;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class Functional {
+	protected ResultSet rs;
+	protected Statement stmt;
+	protected PreparedStatement pstmt;
+	
+	public ResultSet CallSql(Connection conn, String strSql) {
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(strSql);
+			pstmt = conn.prepareStatement(strSql);
+			pstmt.executeUpdate();
+			Commit(conn);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Rollback(conn);
+		} finally {
+			Close(rs);
+			Close(stmt);
+		}
+		
+		return rs;
+	}
+	
+	public static void Close(Statement st) {
+		try {
+			st.close();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void Close(ResultSet rs) {
+		try {
+			rs.close();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void Commit(Connection conn) {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.commit();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void Rollback(Connection conn) {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

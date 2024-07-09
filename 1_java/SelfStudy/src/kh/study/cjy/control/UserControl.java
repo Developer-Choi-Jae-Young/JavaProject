@@ -3,17 +3,22 @@ package kh.study.cjy.control;
 import java.util.ArrayList;
 import java.util.List;
 
+import kh.study.cjy.dao.UserDao;
 import kh.study.cjy.model.User;
 
 public class UserControl {
 	private List<User> userList = new ArrayList<User>();
 	private User u;
+	private UserDao ud = new UserDao();
 
 	public boolean login(String userId, String userPassword) {
 		boolean returnValue = false;
-
-		if (u != null && u.getUserId().equals(userId) && u.getPassword().equals(userPassword)) {
-			returnValue = true;
+		userList = ud.SelectUser();
+		
+		for(User user : userList) {
+			if( user.getUserId().equals(userId) && user.getPassword().equals(userPassword) ) {				
+				returnValue = true;
+			}
 		}
 
 		return returnValue;
@@ -21,11 +26,7 @@ public class UserControl {
 
 	public boolean registUser(String id, String password, String name, int age, 
 			char gender, String phone, String email, String type) {
-		boolean returnValue = false;
-
-		u = new User(0, id, name, password, age, gender, phone, email, type);// , gender, type);
-
-		return returnValue;
+		return ud.InsertUser(new User(0, id, name, password, age, gender, phone, email, type));
 	}
 
 	public boolean changePassword(String currentPassword, String changePassword) {
@@ -38,28 +39,8 @@ public class UserControl {
 
 		return returnValue;
 	}
-
-	public String getId() {
-		return u.getUserId();
-	}
-
-	public String getName() {
-		return u.getName();
-	}
-
-	public char getGender() {
-		return u.getGender();
-	}
-
-	public String getEmail() {
-		return u.getEmail();
-	}
-
-	public String getPhone() {
-		return u.getPhone();
-	}
 	
-	public String getType() {
-		return u.getType();
+	public User getUser() {
+		return u;
 	}
 }

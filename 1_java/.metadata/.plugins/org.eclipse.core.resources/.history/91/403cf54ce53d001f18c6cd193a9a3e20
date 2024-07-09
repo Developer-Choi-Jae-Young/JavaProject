@@ -1,0 +1,41 @@
+package database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import etc.FileInputOutput;
+import etc.FileList;
+
+public class DataSource {
+	private static String driver;
+	private static String url;
+	private static String user;
+	private static String password;
+	private FileInputOutput fio = new FileInputOutput();
+	
+	{
+		fio.FileOpen(FileList.Setting_SQL.name());
+	}
+	
+	public static Connection Connect() {
+		Connection conn = null;
+		Properties prop = fio.getData();
+		
+		try {
+			Class.forName(driver);
+
+			conn = DriverManager.getConnection(url, user, password);
+			conn.setAutoCommit(true);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return conn;
+	}
+
+}

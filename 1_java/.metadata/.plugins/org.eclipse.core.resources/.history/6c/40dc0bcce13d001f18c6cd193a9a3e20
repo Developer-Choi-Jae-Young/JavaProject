@@ -1,0 +1,29 @@
+package etc;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class FileInputOutput {
+	public void FileSave(String fileName, String memo) {
+		Properties prop = new Properties();
+		prop.put("", prop);
+		
+		try {
+			prop.storeToXML(new FileOutputStream("./resource/" + fileName), memo);			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void FileOpen(String fileName) {
+		Properties prop = new Properties();
+		prop.put("", prop);
+		
+		try {
+			prop.storeToXML(new FileOutputStream("./resource/" + fileName), memo);			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
