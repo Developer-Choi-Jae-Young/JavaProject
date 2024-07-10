@@ -1,5 +1,5 @@
 package kh.study.cjy.control;
 
-public class RequestRegistUserControl {
+public class RequestRegistUserControl implements IControl{
 
 }

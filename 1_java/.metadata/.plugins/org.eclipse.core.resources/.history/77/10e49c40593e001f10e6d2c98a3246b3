@@ -1,24 +1,21 @@
 package kh.study.cjy.control;
 
-import kh.study.cjy.etc.ControlFactoryList;
-
 public class FactoryMethodControl {
-	public IControl createContorl(ControlFactoryList type) {
+	public IControl createContorl(String type) {
 		IControl control = null;
-		
 		switch (type) {
-		case USER:
+		case "USER":
 			control = new UserControl();
 			break;
 
-		case SELF_STUDY:
+		case "SELFSTUDY":
 			control = new SelfStudyControl();
 			break;
-
-		case REQUEST_REGIST_USER:
+		
+		case "REQUEST_REGIST_USER":
 			control = new RequestRegistUserControl();
 			break;
-
+			
 		default:
 			break;
 		}

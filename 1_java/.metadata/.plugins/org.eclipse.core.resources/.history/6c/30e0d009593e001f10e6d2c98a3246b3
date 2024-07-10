@@ -1,0 +1,18 @@
+package kh.study.cjy.control;
+
+public class FactoryMethodControl {
+	public IControl createContorl(String type){
+        Mouse mouse = null;
+        switch (type){
+            case "LG":
+                mouse = new LGMouse();
+                break;
+
+            case "Samsung":
+                mouse = new SamsungMouse();
+                break;
+        }
+
+        return mouse;
+    }
+}

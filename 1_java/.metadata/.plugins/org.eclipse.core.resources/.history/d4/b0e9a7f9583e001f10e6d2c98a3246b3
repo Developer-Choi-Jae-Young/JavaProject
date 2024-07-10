@@ -6,7 +6,7 @@ import java.util.List;
 import kh.study.cjy.dao.UserDao;
 import kh.study.cjy.model.User;
 
-public class UserControl implements IControl {
+public class UserControl {
 	private List<User> userList = new ArrayList<User>();
 	private User u;
 	private UserDao ud = new UserDao();

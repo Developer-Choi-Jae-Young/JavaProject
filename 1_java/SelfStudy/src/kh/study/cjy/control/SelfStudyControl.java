@@ -1,5 +1,5 @@
 package kh.study.cjy.control;
 
-public class SelfStudyControl {
+public class SelfStudyControl implements IControl {
 
 }

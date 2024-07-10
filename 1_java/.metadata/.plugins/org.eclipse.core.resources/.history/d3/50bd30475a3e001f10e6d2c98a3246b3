@@ -13,8 +13,7 @@ import kh.study.cjy.etc.FileList;
 
 public class View {
 	private Scanner sc = new Scanner(System.in);
-	private FactoryMethodControl fc = new FactoryMethodControl(); //의존관계를 많이 해결했지만 원하는 메소드를 호출을 어떻게 할까?
-	private UserControl uc = new UserControl();
+	private FactoryMethodControl fc = new FactoryMethodControl();
 	
 	public View() {
 		Banner.print();
