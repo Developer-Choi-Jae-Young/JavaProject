@@ -2,13 +2,12 @@ package kh.study.cjy.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import etc.Banner;
-import etc.FileInputOutput;
-import etc.FileList;
 import kh.study.cjy.control.UserControl;
+import kh.study.cjy.etc.Banner;
+import kh.study.cjy.etc.FileInputOutput;
+import kh.study.cjy.etc.FileList;
 
 public class View {
 	private Scanner sc = new Scanner(System.in);
@@ -18,8 +17,8 @@ public class View {
 		Banner.print();
 		
 		FileInputOutput fio = new FileInputOutput();
-		if(!fio.isExist(FileList.Setting_SQL.name())) {
-			fio.FileSave(FileList.Setting_SQL.name(), "SQL_META_DATA");
+		if(!fio.isExist(FileList.SQL_META_DATA.name())) {
+			fio.FileSave(FileList.SQL_META_DATA.name(), "SQL_META_DATA");
 		}
 		
 		while (true) {

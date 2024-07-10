@@ -1,5 +1,5 @@
 package kh.study.cjy.model;
 
-public interface Admin {
+public class Admin extends User implements IAdmin{
 
 }

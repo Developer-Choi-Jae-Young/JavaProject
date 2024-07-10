@@ -1,5 +1,5 @@
 package kh.study.cjy.model;
 
-public abstract class Teacher {
-	
+public class Teacher extends User implements ITeacher{
+
 }
