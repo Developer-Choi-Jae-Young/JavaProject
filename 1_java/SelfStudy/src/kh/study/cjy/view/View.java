@@ -2,28 +2,33 @@ package kh.study.cjy.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 import kh.study.cjy.control.FactoryMethodControl;
+import kh.study.cjy.control.RequestRegistUserControl;
 import kh.study.cjy.control.UserControl;
-import kh.study.cjy.etc.Banner;
+import kh.study.cjy.database.DataSource;
 import kh.study.cjy.etc.ControlFactoryList;
 import kh.study.cjy.etc.FileInputOutput;
 import kh.study.cjy.etc.FileList;
+import kh.study.cjy.model.RequestRegistUser;
+import kh.study.cjy.model.User;
 
 public class View {
 	private Scanner sc = new Scanner(System.in);
 	private FactoryMethodControl fc = new FactoryMethodControl(); //의존관계를 많이 해결했지만 원하는 메소드를 호출을 어떻게 할까?
 	private UserControl uc = new UserControl();
+	private RequestRegistUserControl rruc = new RequestRegistUserControl();
 	
-	public View() {
-		Banner.print();
-		
+	public View() {		
 		FileInputOutput fio = new FileInputOutput();
 		if(!fio.isExist(FileList.SQL_META_DATA.name())) {
 			fio.FileSave(FileList.SQL_META_DATA.name(), "SQL_META_DATA");
-		}
+		} 
 		
+		DataSource.Init();
+
 		while (true) {
 			if (mainView())
 				break;
@@ -131,9 +136,13 @@ public class View {
 		System.out.print("Gender : ");
 		char gender = sc.nextLine().charAt(0);
 		System.out.println("======================================");
-		uc.registUser(id, password, name, age, gender, phone, email, type);
 		
-		System.out.println("회원가입을 완료하였습니다.");
+		if(rruc.registRequestRegistUser(id, password, name, age, gender, phone, email, type)) {
+			System.out.println("회원가입을 완료하였습니다.");			
+		} else {
+			System.out.println("중복된 아이디가 존재해 회원가입을 취소합니다.");
+		}
+		
 		return returnValue;
 	}
 
@@ -150,6 +159,7 @@ public class View {
 			System.out.println("2. 자습현황");
 			System.out.println("3. 로그아웃");
 			if (uc.getUser().getType().equals("ADMIN")) System.out.println("4. 회원가입 요청처리"); // 관리자라면
+			if (uc.getUser().getType().equals("ADMIN")) System.out.println("5. 회원 삭제"); // 관리자라면
 			System.out.println("======================================");
 			System.out.print("선택 : ");
 			int num = sc.nextInt();
@@ -170,6 +180,9 @@ public class View {
 				break;
 			case 4:
 				if(uc.getUser().getType().equals("ADMIN")) acceptRequestRegistUser();//관리자만 가능
+				break;
+			case 5:
+				if(uc.getUser().getType().equals("ADMIN")) removeUser();//관리자만 가능
 				break;
 			default:
 				break;
@@ -236,14 +249,68 @@ public class View {
 	}
 	
 	private void acceptRequestRegistUser() {
+		List userList = rruc.getRequestRegistUser();
+		
 		System.out.println("======================================");
-		//회원가입 요청 리스트 출력
+		for(Object rru : userList) {
+			System.out.println((RequestRegistUser)rru);
+		}
 		System.out.println("======================================");
 		
-		System.out.print("회원가입 수락할 번호 : ");
+		System.out.print("회원가입 수락/삭제할 번호 : ");
 		int num = sc.nextInt();
-		sc.next();
 		
-		//인덱스 찾아가서 해당 인덱스의 정보만 쿼리문으로 insert하기
+		System.out.print("회원가입 수락(y) or 삭제(n) : ");
+		char select = sc.nextLine().charAt(0);
+		
+		RequestRegistUser rru = (RequestRegistUser)userList.get(num);
+		if(select == 'y' || select == 'Y') {			
+			if(uc.registUser(rru.getUserId(), rru.getPassword(), rru.getName(), rru.getAge(), rru.getGender(), rru.getPhone(), rru.getEmail(), rru.getType())) {
+				System.out.println("회원가입을 완료하였습니다.");			
+			} else {
+				System.out.println("중복된 아이디가 존재해 회원가입을 취소합니다.");
+			}
+		} else if(select == 'n' || select == 'N') {
+			System.out.printf("삭제할 대상의 아이디 : ");
+			String id = sc.nextLine();
+			System.out.printf("삭제할 대상의 이름 : ");
+			String name = sc.nextLine();
+			System.out.printf("삭제할 대상의 나이 : ");
+			int age = sc.nextInt();
+			System.out.printf("삭제할 대상의 전화번호 : ");
+			String phone = sc.nextLine();
+			//if(rruc.deleteRequestRegistUser(rru.getUserId(), rru.getName(), rru.getAge(), rru.getPhone())) {
+			if(rruc.deleteRequestRegistUser(id, name, age, phone)) {
+				System.out.println("해당항목을 목록에서 삭제 완료하였습니다.");			
+			} else {
+				System.out.println("삭제가 실패 되어 이전으로 돌아갑니다.");
+			}
+		} else {
+			System.out.println("잘못입력하여 아무것도 수행하지 않고 이전 화면으로 돌아갑니다.");
+		}
+	}
+	
+	public void removeUser() {
+		List userList = uc.getUserList();
+		System.out.println("======================================");
+		for(Object u : userList) {
+			System.out.println((User)u);
+		}
+		System.out.println("======================================");
+		
+		System.out.printf("삭제할 대상의 아이디 : ");
+		String id = sc.nextLine();
+		System.out.printf("삭제할 대상의 이름 : ");
+		String name = sc.nextLine();
+		System.out.printf("삭제할 대상의 나이 : ");
+		int age = sc.nextInt();
+		System.out.printf("삭제할 대상의 전화번호 : ");
+		String phone = sc.nextLine();
+		//if(uc.deleteUser(rru.getUserId(), rru.getName(), rru.getAge(), rru.getPhone())) {
+		if(uc.deleteUser(id, name, age, phone)) {
+			System.out.println("해당항목을 회원에서 삭제 완료하였습니다.");			
+		} else {
+			System.out.println("삭제가 실패 되어 이전으로 돌아갑니다.");
+		}
 	}
 }

@@ -12,24 +12,24 @@ import kh.study.cjy.etc.FileList;
 
 public class DataSource {
 	private static Map<String, String> prop = new HashMap<String, String>();
-	private FileInputOutput fio = new FileInputOutput();
-	
-	{
+
+	public static void Init() {
+		FileInputOutput fio = new FileInputOutput();
 		fio.FileOpen(FileList.SQL_META_DATA.name());
 		Properties properties = fio.getData(FileList.SQL_META_DATA.name());
-		for(String key : properties.stringPropertyNames()) {
+		for (String key : properties.stringPropertyNames()) {
 			prop.put(key, properties.getProperty(key));
 		}
 	}
-	
+
 	public static Connection Connect() {
 		Connection conn = null;
-		
+
 		try {
 			Class.forName(prop.get("driver"));
 
 			conn = DriverManager.getConnection(prop.get("url"), prop.get("user"), prop.get("password"));
-			conn.setAutoCommit(true);
+			conn.setAutoCommit(false);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

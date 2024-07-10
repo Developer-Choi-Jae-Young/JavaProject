@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>SQL_META_DATA</comment>
+<entry key="password">root</entry>
+<entry key="driver">com.mysql.cj.jdbc.Driver</entry>
+<entry key="user">root</entry>
+<entry key="url">jdbc:mysql://127.0.0.1:3306/server?serverTimezone=UTC&amp;useUniCode=yes&amp;characterEncoding=UTF-8</entry>
+</properties>

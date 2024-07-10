@@ -1,0 +1,44 @@
+package kh.study.cjy.control;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.dao.RequestRegistUserDao;
+import kh.study.cjy.model.User;
+
+public class RequestRegistUserControl implements IControl{
+	private RequestRegistUserDao rrud = new RequestRegistUserDao();
+	
+	public List<RequestRegistUserControl> getRequestRegistUser() {
+		
+		return null;
+	}
+	
+	public boolean registRequestRegistUser(String id, String password, String name, int age, char gender, String phone, String email,
+			String type) {
+		boolean returnValue = false;
+
+		if (duplicationUserId(id)) {
+			returnValue = rrud.insertUser(new User(0, id, name, password, age, gender, phone, email, type));
+		} else {
+			returnValue = false;
+		}
+
+		return returnValue;
+	}
+	
+	private boolean duplicationUserId(String userId) {
+		boolean returnValue = true;
+		List<User> userList = new ArrayList<User>();
+		userList = rrud.selectRequestRegistUser();
+
+		for (User user : userList) {
+			if (user.getUserId().equals(userId)) {
+				returnValue = false;
+				break;
+			}
+		}
+
+		return returnValue;
+	}
+}

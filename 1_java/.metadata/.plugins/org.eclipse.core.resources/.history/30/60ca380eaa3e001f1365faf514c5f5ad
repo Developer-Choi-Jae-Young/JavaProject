@@ -1,0 +1,14 @@
+package kh.study.cjy.control;
+
+import java.util.List;
+
+import kh.study.cjy.dao.RequestRegistUserDao;
+
+public class RequestRegistUserControl implements IControl{
+	private RequestRegistUserDao rrud = new RequestRegistUserDao();
+	
+	public List<RequestRegistUserControl> getRequestRegistUser() {
+		
+		return null;
+	}
+}

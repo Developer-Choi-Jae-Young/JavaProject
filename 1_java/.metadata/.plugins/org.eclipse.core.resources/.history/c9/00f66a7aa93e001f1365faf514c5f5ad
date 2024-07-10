@@ -1,0 +1,9 @@
+package kh.study.cjy.control;
+
+import java.util.List;
+
+public class RequestRegistUserControl implements IControl{
+	public List<RequestRegistUserControl> getRequestRegistUser() {
+		return null;
+	}
+}

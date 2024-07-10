@@ -13,7 +13,7 @@ public class Functional {
 	
 	public ResultSet CallSqlSelect(Connection conn, String strSql) {
 		try {
-			String[] strList = strSql.split(strSql);
+			String[] strList = strSql.split(" ");
 			
 			if(strList[0].toUpperCase().equals("SELECT")) {
 				stmt = conn.createStatement();
@@ -24,8 +24,8 @@ public class Functional {
 			e.printStackTrace();
 			Rollback(conn);
 		} finally {
-			Close(rs);
-			Close(stmt);
+			//Close(rs);
+			//Close(stmt);
 		}
 		
 		return rs;
@@ -35,13 +35,13 @@ public class Functional {
 		int returnValue = 0;
 		
 		try {
-			String[] strList = strSql.split(strSql);
+			String[] strList = strSql.split(" ");
 			
 			if(strList[0].toUpperCase().equals("INSERT") || 
 					strList[0].toUpperCase().equals("UPDATE") || 
 					strList[0].toUpperCase().equals("DELETE")){
-				pstmt = conn.prepareStatement(strSql);
-				returnValue = pstmt.executeUpdate(); 
+				stmt = conn.createStatement();
+				returnValue = stmt.executeUpdate(strSql); 
 				Commit(conn);
 			} 
 			
@@ -49,8 +49,7 @@ public class Functional {
 			e.printStackTrace();
 			Rollback(conn);
 		} finally {
-			Close(rs);
-			Close(pstmt);
+			if(stmt != null) Close(stmt);
 		}
 		
 		return returnValue;

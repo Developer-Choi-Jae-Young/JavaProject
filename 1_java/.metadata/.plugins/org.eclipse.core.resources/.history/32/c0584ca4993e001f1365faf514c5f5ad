@@ -1,0 +1,77 @@
+package kh.study.cjy.dao;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.database.DataSource;
+import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.User;
+
+public class UserDao extends Functional {
+	/*
+	 * User Table Create
+	 */
+	public List<User> SelectUser() {
+		List<User> userList = new ArrayList<User>();
+
+		try {
+			while (CallSqlSelect(DataSource.Connect(), "Select * from User").next()) {
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String password = rs.getString("name");
+				int age = rs.getInt("age");
+				String phone = rs.getString("phone"); 
+				String email = rs.getString("email");
+				
+				userList.add(new User(id, userId, name, password, age, gender, phone, email, type));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return userList;
+	}
+
+	/*
+	 * User Table Data Insert
+	 */
+	public boolean InsertUser(User user) {
+		boolean returnValue = false;
+
+		if (CallSqlOther(DataSource.Connect(),
+				"INSERT INTO User (name, password, age, phone, email) VALUES " + "(\"" + user.getName() + "\"" + ", \""
+						+ user.getPassword() + "\"" + "," + user.getAge() + ", \"" + user.getPhone() + "\"" + ", \""
+						+ user.getEmail() + "\");") > 0) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+
+	/*
+	 * User Table Data Update
+	 */
+	public boolean UpdateUser(User user) {
+		boolean returnValue = false;
+
+		if (CallSqlOther(DataSource.Connect(), "") > 0) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+
+	/*
+	 * User Table Data Delete
+	 */
+	public boolean DeleteUser(User user) {
+		boolean returnValue = false;
+
+		if (CallSqlOther(DataSource.Connect(), "") > 0) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+}

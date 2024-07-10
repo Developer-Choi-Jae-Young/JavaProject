@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.sql.DriverManager"/>
-    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-    <fullyQualifiedTypeName name="T"/>
-    <fullyQualifiedTypeName name="com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar"/>
-    <fullyQualifiedTypeName name="Function.UserInfo"/>
-    <fullyQualifiedTypeName name="java.lang.reflect.Constructor"/>
     <fullyQualifiedTypeName name="com.mysql.cj.x.protobuf.MysqlxNotice.SessionStateChanged.Parameter"/>
     <fullyQualifiedTypeName name="java.lang.reflect.Parameter"/>
     <fullyQualifiedTypeName name="etc.Grade"/>
@@ -21,7 +15,6 @@
     <fullyQualifiedTypeName name="kh.study.cjy.view.View"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="java.time.format.DateTimeFormatter"/>
-    <fullyQualifiedTypeName name="kh.study.cjy.control.UserControl"/>
     <fullyQualifiedTypeName name="java.lang.Runtime"/>
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="etc.Multipurpose"/>
@@ -38,8 +31,6 @@
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="com.mysql.cj.exceptions.RSAException"/>
     <fullyQualifiedTypeName name="kh.study.cjy.dao.UserDao"/>
-    <fullyQualifiedTypeName name="kh.study.cjy.model.User"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
@@ -48,9 +39,25 @@
     <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="etc.FileInputOutput"/>
     <fullyQualifiedTypeName name="etc.FileName"/>
-    <fullyQualifiedTypeName name="java.lang.Process"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.IAdmin"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.ITeacher"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.Teacher"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.HashMap"/>
-    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="java.lang.Process"/>
     <fullyQualifiedTypeName name="java.util.Properties"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.etc.FileList"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.SelfStudyControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.IControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.FactoryMethodControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.etc.ControlFactoryList"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.database.DataSource"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.UserControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.RequestRegistUserControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.dao.RequestRegistUserDao"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.RequestRegistUser"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.User"/>
 </qualifiedTypeNameHistroy>

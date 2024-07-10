@@ -41,7 +41,7 @@ public class FileInputOutput {
 	
 	public boolean isExist(String fileName) {
 		boolean returnValue = false;
-		File file = new File(fileName);
+		File file = new File(PATH + fileName);
 		
 		if(file.exists()) {
 			returnValue = true;
