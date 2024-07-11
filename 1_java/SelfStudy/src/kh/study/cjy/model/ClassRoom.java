@@ -5,10 +5,12 @@ public class ClassRoom {
 	private String address;
 	private String name;
 	private int floor;
-	private String className;
+	private char className;
 	
-	public ClassRoom(int id, String address, String name, int floor, String className) {
-		super();
+	public ClassRoom() {
+	}
+
+	public ClassRoom(int id, String address, String name, int floor, char className) {
 		this.id = id;
 		this.address = address;
 		this.name = name;
@@ -40,10 +42,17 @@ public class ClassRoom {
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
-	public String getClassName() {
+	public char getClassName() {
 		return className;
 	}
-	public void setClassName(String className) {
+	public void setClassName(char className) {
 		this.className = className;
 	}
+
+	@Override
+	public String toString() {
+		return "[id=" + id + ", address=" + address + ", name=" + name + ", floor=" + floor + ", className="
+				+ className + "]";
+	}
+	
 }

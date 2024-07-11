@@ -9,7 +9,6 @@ public class SelfStudy {
 	private LocalDateTime date;
 	
 	public SelfStudy(int id, String place, String student, LocalDateTime date) {
-		super();
 		this.id = id;
 		this.place = place;
 		this.student = student;

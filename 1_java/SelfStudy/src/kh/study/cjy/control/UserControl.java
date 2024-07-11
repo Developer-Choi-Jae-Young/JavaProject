@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kh.study.cjy.dao.UserDao;
+import kh.study.cjy.model.Teacher;
 import kh.study.cjy.model.User;
 
 public class UserControl implements IControl<User> {
@@ -50,6 +51,21 @@ public class UserControl implements IControl<User> {
 
 		return returnValue;
 	}
+	
+	public User searchTeacher(String teacherId, String teacherName) {
+		User teacher = new Teacher();
+		
+		for (User user : select()) {
+			if(user instanceof Teacher) {				
+				if (user.getUserId().equals(teacherId) && user.getName().equals(teacherName)) {
+					teacher = user;
+					break;
+				}
+			}
+		}
+		
+		return teacher;
+	}
 
 	public User getUser() {
 		return u;
@@ -78,5 +94,10 @@ public class UserControl implements IControl<User> {
 	@Override
 	public boolean delete(User type) {
 		return ud.deleteUser(type.getUserId(), type.getName(), type.getAge(), type.getPhone());
+	}
+
+	@Override
+	public boolean update(User type) {
+		return ud.updateUser(type);
 	}
 }

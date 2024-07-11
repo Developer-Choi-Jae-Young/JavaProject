@@ -1,0 +1,44 @@
+package kh.study.cjy.control;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.dao.ClassRoomDao;
+import kh.study.cjy.model.ClassRoom;
+import kh.study.cjy.model.User;
+
+public class ClassRoomControl implements IControl<ClassRoom>{
+	private ClassRoomDao crd = new ClassRoomDao();
+	
+	@Override
+	public List<ClassRoom> select() {
+		List<ClassRoom> userList = new ArrayList<ClassRoom>();
+		userList = crd.selectClassRoom();
+		return userList;
+	}
+
+	@Override
+	public boolean insert(ClassRoom type) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(ClassRoom type) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public ClassRoom searchClassRoom(char classRoomName) {
+		ClassRoom classRoom = new ClassRoom();
+		
+		for(ClassRoom cr : select()) {
+			if(cr.getClassName() == classRoomName) {
+				classRoom = cr;
+				break;
+			}
+		}
+		
+		return classRoom;
+	}
+}

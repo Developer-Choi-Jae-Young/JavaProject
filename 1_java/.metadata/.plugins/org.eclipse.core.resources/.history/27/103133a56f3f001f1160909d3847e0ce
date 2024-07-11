@@ -1,0 +1,7 @@
+package kh.study.cjy.dao;
+
+import kh.study.cjy.database.Functional;
+
+public class ClassRoomDao extends Functional{
+
+}

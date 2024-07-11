@@ -6,6 +6,8 @@ import java.util.List;
 
 import kh.study.cjy.database.DataSource;
 import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.Student;
+import kh.study.cjy.model.Teacher;
 import kh.study.cjy.model.User;
 
 public class UserDao extends Functional {
@@ -29,7 +31,17 @@ public class UserDao extends Functional {
 				String email = rs.getString("email");
 				String type = rs.getString("type");
 				
-				userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
+				switch (type) {
+				case "Student" : 
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				case "Teacher" :
+					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				default:
+					userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,6 +91,41 @@ public class UserDao extends Functional {
 			returnValue = true;
 		}
 
+		return returnValue;
+	}
+	
+	/*
+	 * User Table Data Update
+	 */
+	public boolean updateUser(User user) {
+		boolean returnValue = false;
+		
+		if(user instanceof Student) {
+			if(((Student)user).getClassRoom() != null && ((Student)user).getTeacher() != null) {
+				if (CallSqlOther(DataSource.Connect(), "Update User set name = \"" + user.getName() + "\" , age = " + user.getAge() + " , phone = \"" + user.getPhone() + "\" , email = \"" + user.getEmail() + "\", gender = \'" + user.getGender() + "\', class_id = " + ((Student
+						)user).getClassRoom().getId() + " teacher_id = " + ((Student)user).getTeacher().getId() + " where userid = \"" + user.getUserId() + "\";") > 0) {
+					returnValue = true;
+				}
+			} else if(((Student)user).getClassRoom() == null) {
+				if (CallSqlOther(DataSource.Connect(), "Update User set name = \"" + user.getName() + "\" , age = " + user.getAge() + " , phone = \"" + user.getPhone() + "\" , email = \"" + user.getEmail() + "\", gender = \'" + user.getGender() + "\', teacher_id = " + ((Student)user).getTeacher().getId() + " where userid = \"" + user.getUserId() + "\";") > 0) {
+					returnValue = true;
+				}
+			} else if(((Student)user).getTeacher() == null) {
+				if (CallSqlOther(DataSource.Connect(), "Update User set name = \"" + user.getName() + "\" , age = " + user.getAge() + " , phone = \"" + user.getPhone() + "\" , email = \"" + user.getEmail() + "\", gender = \'" + user.getGender() + "\', class_id = " + ((Student
+						)user).getClassRoom().getId() + " where userid = \"" + user.getUserId() + "\";") > 0) {
+					returnValue = true;
+				}
+			} else {
+				if (CallSqlOther(DataSource.Connect(), "Update User set name = \"" + user.getName() + "\" , age = \"" + user.getAge() + "\" , phone = \"" + user.getPhone() + "\" , email = \"" + user.getEmail() + "\", gender = \'" + user.getGender() + "\' where userid = \"" + user.getUserId() + "\";") > 0) {
+					returnValue = true;
+				}
+			}
+			
+		} else {
+			if (CallSqlOther(DataSource.Connect(), "Update User set name = \"" + user.getName() + "\" , age = \"" + user.getAge() + "\" , phone = \"" + user.getPhone() + "\" , email = \"" + user.getEmail() + "\", gender = \'" + user.getGender() + "\' where userid = \"" + user.getUserId() + "\";") > 0) {
+				returnValue = true;
+			}
+		}
 		return returnValue;
 	}
 }

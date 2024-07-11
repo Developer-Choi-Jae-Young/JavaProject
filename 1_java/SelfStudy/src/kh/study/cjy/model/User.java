@@ -11,11 +11,11 @@ import javax.crypto.NoSuchPaddingException;
 import kh.study.cjy.etc.AESCrypto;
 
 public class User {
-	private Integer id;
+	private int id;
 	private String userId;
 	private String name;
 	private String password;
-	private Integer age;
+	private int age;
 	private String phone;
 	private char gender;
 	private String email;
@@ -25,14 +25,14 @@ public class User {
 
 	}
 	
-	public User(String userId, String name, Integer age, String phone) {
+	public User(String userId, String name, int age, String phone) {
 		this.userId = userId;
 		this.name = name;
 		this.age = age;
 		this.phone = phone;
 	}
 	
-	public User(Integer id, String userId, String name, String password, Integer age, char gender, String phone,
+	public User(int id, String userId, String name, String password, int age, char gender, String phone,
 			String email, String type, boolean isEncoding) {
 		this.id = id;
 		this.userId = userId;

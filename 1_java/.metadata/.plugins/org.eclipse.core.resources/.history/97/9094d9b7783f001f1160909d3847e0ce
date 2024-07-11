@@ -1,0 +1,68 @@
+package kh.study.cjy.dao;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.database.DataSource;
+import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.ClassRoom;
+import kh.study.cjy.model.User;
+
+public class ClassRoomDao extends Functional{
+	/*
+	 * User Table Create
+	 */
+	public List<ClassRoom> selectClassRoom() {
+		List<ClassRoom> classRoomList = new ArrayList<ClassRoom>();
+
+		try {
+			CallSqlSelect(DataSource.Connect(), "Select * from ClassRoom;");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String address = rs.getString("address");
+				String name = rs.getString("name");
+				int floor = rs.getInt("floor");
+				char className = rs.getString("class").charAt(0);
+				classRoomList.add(new ClassRoom());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(rs);
+			Close(stmt);
+		}
+
+		return classRoomList;
+	}
+	
+	/*
+	 * User Table Data Insert
+	 */
+	public boolean insertClassRoom(User user) {
+		boolean returnValue = false;
+
+		if (CallSqlOther(DataSource.Connect(),
+				"INSERT INTO User (userid, name, password, age, gender, phone, email, type) VALUES " + "(\"" + user.getUserId() + "\", \"" + user.getName() + "\", \"" + user.getPassword(false) + "\"," + user.getAge() + ", \'" + user.getGender() + "', \"" + user.getPhone() + "\", \"" + user.getEmail() + "\", \"" +  user.getType() + "\");") > 0) {
+			
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+	
+	/*
+	 * User Table Data Delete
+	 */
+	public boolean deleteUser(String userid, String name, int age, String phone) {
+		boolean returnValue = false;
+
+		if (CallSqlOther(DataSource.Connect(), "Delete from User Where userid = \"" + userid + "\" AND name = \"" + name + "\" AND age = " + age + " AND phone = \"" + phone + "\";") > 0) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+	
+}

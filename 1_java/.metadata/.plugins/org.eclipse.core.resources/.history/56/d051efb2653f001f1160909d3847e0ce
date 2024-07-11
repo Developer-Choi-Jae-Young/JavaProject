@@ -1,0 +1,6 @@
+package kh.study.cjy.model;
+
+public class Student extends User{
+	private ClassRoom classRoom;
+	private Teacher teacher;
+}
