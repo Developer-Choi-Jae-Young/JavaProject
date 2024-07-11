@@ -1,0 +1,22 @@
+package kh.study.cjy.etc;
+
+public class AESCrypto {
+	 /**
+     * 키 반환
+     */
+    public static SecretKey getKey() throws Exception {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+        SecretKey secretKey = keyGenerator.generateKey();
+        return secretKey;
+    }
+	
+    /**
+     * 초기화 벡터 반환
+     */
+    public static IvParameterSpec getIv() {
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
+    }
+}

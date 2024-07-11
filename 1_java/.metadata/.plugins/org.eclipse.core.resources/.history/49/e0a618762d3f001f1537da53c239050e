@@ -1,0 +1,5 @@
+package kh.study.cjy.model;
+
+public class Student extends User implements IStudent{
+	private Teacher teacher;
+}

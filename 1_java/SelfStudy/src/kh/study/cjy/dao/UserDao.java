@@ -1,12 +1,14 @@
 package kh.study.cjy.dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import kh.study.cjy.database.DataSource;
 import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.Admin;
+import kh.study.cjy.model.Student;
+import kh.study.cjy.model.Teacher;
 import kh.study.cjy.model.User;
 
 public class UserDao extends Functional {
@@ -30,7 +32,20 @@ public class UserDao extends Functional {
 				String email = rs.getString("email");
 				String type = rs.getString("type");
 				
-				userList.add(new User(id, userId, name, password, age, gender, phone, email, type));
+				switch (type) {
+				case "Student":
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				case "Teacher":
+					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				case "Admin":
+					userList.add(new Admin(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				default:
+					break;
+				}
+				//userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -49,7 +64,7 @@ public class UserDao extends Functional {
 		boolean returnValue = false;
 
 		if (CallSqlOther(DataSource.Connect(),
-				"INSERT INTO User (userid, name, password, age, gender, phone, email, type) VALUES " + "(\"" + user.getUserId() + "\", \"" + user.getName() + "\", \"" + user.getPassword() + "\"," + user.getAge() + ", \'" + user.getGender() + "', \"" + user.getPhone() + "\", \"" + user.getEmail() + "\", \"" +  user.getType() + "\");") > 0) {
+				"INSERT INTO User (userid, name, password, age, gender, phone, email, type) VALUES " + "(\"" + user.getUserId() + "\", \"" + user.getName() + "\", \"" + user.getPassword(false) + "\"," + user.getAge() + ", \'" + user.getGender() + "', \"" + user.getPhone() + "\", \"" + user.getEmail() + "\", \"" +  user.getType() + "\");") > 0) {
 			
 			returnValue = true;
 		}
@@ -76,7 +91,7 @@ public class UserDao extends Functional {
 	public boolean deleteUser(String userid, String name, int age, String phone) {
 		boolean returnValue = false;
 
-		if (CallSqlOther(DataSource.Connect(), "Delete from User Where userid = \"" + userid + "\" AND name = \"" + name + "\" AND age = " + age + " AND phone = \"" + phone + "\");") > 0) {
+		if (CallSqlOther(DataSource.Connect(), "Delete from User Where userid = \"" + userid + "\" AND name = \"" + name + "\" AND age = " + age + " AND phone = \"" + phone + "\";") > 0) {
 			returnValue = true;
 		}
 

@@ -20,7 +20,7 @@ public class RequestRegistUserControl implements IControl{
 		boolean returnValue = false;
 
 		if (duplicationUserId(id)) {
-			returnValue = rrud.insertRequestRegistUser(new RequestRegistUser(0, id, name, password, age, gender, phone, email, type));
+			returnValue = rrud.insertRequestRegistUser(new RequestRegistUser(0, id, name, password, age, gender, phone, email, type, true));
 		} else {
 			returnValue = false;
 		}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kh.study.cjy.dao.UserDao;
-import kh.study.cjy.model.RequestRegistUser;
 import kh.study.cjy.model.User;
 
 public class UserControl implements IControl {
@@ -23,7 +22,7 @@ public class UserControl implements IControl {
 		userList = ud.selectUser();
 
 		for (User user : userList) {
-			if (user.getUserId().equals(userId) && user.getPassword().equals(userPassword)) {
+			if (user.getUserId().equals(userId) && user.getPassword(true).equals(userPassword)) {
 				u = user;
 				returnValue = true;
 				break;
@@ -38,7 +37,7 @@ public class UserControl implements IControl {
 		boolean returnValue = false;
 
 		if (duplicationUserId(id)) {
-			returnValue = ud.insertUser(new User(0, id, name, password, age, gender, phone, email, type));
+			returnValue = ud.insertUser(new User(0, id, name, password, age, gender, phone, email, type, true));
 		} else {
 			returnValue = false;
 		}
@@ -50,7 +49,7 @@ public class UserControl implements IControl {
 		boolean returnValue = false;
 
 		if (u != null) {
-			if (u.getPassword().equals(currentPassword)) {
+			if (u.getPassword(true).equals(currentPassword)) {
 				u.setPassword(changePassword);
 				ud.updateUsserPassword(u, changePassword);
 				returnValue = true;
