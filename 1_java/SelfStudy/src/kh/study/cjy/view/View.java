@@ -1,7 +1,7 @@
 package kh.study.cjy.view;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +15,7 @@ import kh.study.cjy.etc.ControlFactoryList;
 import kh.study.cjy.etc.FileInputOutput;
 import kh.study.cjy.etc.FileList;
 import kh.study.cjy.model.RequestRegistUser;
+import kh.study.cjy.model.SelfStudy;
 import kh.study.cjy.model.User;
 
 public class View {
@@ -174,11 +175,13 @@ public class View {
 			System.out.println("======================================");
 			System.out.println("1. 내정보");
 			System.out.println("2. 자습현황");
-			System.out.println("3. 로그아웃");
+			if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Student"))
+				System.out.println("3. 자습신청"); // 학생이면
 			if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
-				System.out.println("4. 회원가입 요청처리"); // 관리자라면
+				System.out.println("3. 회원가입 요청처리"); // 관리자라면
 			if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
-				System.out.println("5. 회원 삭제"); // 관리자라면
+				System.out.println("4. 회원 삭제"); // 관리자라면
+			System.out.println("9. 로그아웃");
 			System.out.println("======================================");
 			System.out.print("선택 : ");
 			int num = sc.nextInt();
@@ -194,16 +197,18 @@ public class View {
 				printTodaySelfStudySchdule(type);
 				break;
 			case 3:
-				System.out.println("로그아웃 하여 메인으로 돌아갑니다.");
-				bflag = true;
+				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
+					acceptRequestRegistUser();// 관리자만 가능
+				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Student"))
+					insertSelfStudySchdule();
 				break;
 			case 4:
 				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
-					acceptRequestRegistUser();// 관리자만 가능
-				break;
-			case 5:
-				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 					removeUser();// 관리자만 가능
+				break;
+			case 9:
+				System.out.println("로그아웃 하여 메인으로 돌아갑니다.");
+				bflag = true;
 				break;
 			default:
 				break;
@@ -214,14 +219,12 @@ public class View {
 	}
 
 	private void printTodaySelfStudySchdule(String type) {
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		String formatedNow = now.format(formatter);
-
 		System.out.println("======================================");
 		// 관리자면 날짜별로 기록 확인할수 있도록 아니면 그냥 금일 날짜에 대한 기록만 출력
 		if (!((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin")) {
-			// 오늘기록 print
+			for(Object ss : controlList[ControlFactoryList.SELF_STUDY.ordinal()].select()) {
+				System.out.println((SelfStudy)ss); //오늘 &&해당 건물의 층의 자습대장 출력
+			}
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
 			int year = sc.nextInt();
@@ -229,14 +232,21 @@ public class View {
 			int month = sc.nextInt();
 			System.out.print("확인하고 싶은 일 : ");
 			int day = sc.nextInt();
-
+			
+			Calendar cal = Calendar.getInstance();
+			cal.set(year, month - 1, day);
+			Date currentDay = new Date();
 			// 오늘보다 날짜가 더 큰경우 볼수 없으니 예외처리
-			if (true) {
-				// 모든기록 print
+			if (currentDay.compareTo(cal.getTime()) == 1) { 
+				// 해당 날짜의 모든기록 print
 			} else {
 				System.out.println("오늘보다 날짜가 더 큽니다. 다시 한번 확인해주세요.");
 			}
 		}
+	}
+	
+	private void insertSelfStudySchdule() {
+		
 	}
 
 	private boolean printMyInformation() {

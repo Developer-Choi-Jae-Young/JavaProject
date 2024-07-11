@@ -1,0 +1,15 @@
+package kh.study.cjy.model;
+
+import java.time.LocalDateTime;
+
+public class SelfStudy {
+	public String place;
+	public String teacher;
+	public String student;
+	public LocalDateTime date;
+	
+	@Override
+	public String toString() {
+		return "[place=" + place + ", teacher=" + teacher + ", student=" + student + ", date=" + date + "]";
+	}
+}

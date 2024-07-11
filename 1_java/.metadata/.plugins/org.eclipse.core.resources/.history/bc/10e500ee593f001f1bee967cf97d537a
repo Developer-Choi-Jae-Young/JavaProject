@@ -1,0 +1,7 @@
+package kh.study.cjy.control;
+
+import kh.study.cjy.model.ClassRoom;
+
+public class ClassRoomControl implements IControl<ClassRoom>{
+
+}

@@ -18,7 +18,11 @@ public class FactoryMethodControl {
 		case REQUEST_REGIST_USER:
 			control = new RequestRegistUserControl();
 			break;
-
+		
+		case CLASS_ROOM_CONTROL:
+			control = new ClassRoomControl();
+			break;
+			
 		default:
 			break;
 		}

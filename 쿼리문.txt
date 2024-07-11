@@ -8,7 +8,9 @@ Create Table User (
 	phone VARCHAR(20) NOT NULL,
 	email VARCHAR(20) NOT NULL,
 	type VARCHAR(20) NOT NULL,
-	CONSTRAINT Teacher_PK PRIMARY KEY(id)
+	class_id INT(11) NULL,
+	CONSTRAINT User PRIMARY KEY(id)
+	CONSTRAINT User_FK FOREIGN KEY(class_id) REFERENCES ClassRoom(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 Create Table RequestRegistUser (
@@ -24,11 +26,19 @@ Create Table RequestRegistUser (
 	CONSTRAINT RequestRegistUser PRIMARY KEY(id)
 );
 
+Create Table ClassRoom (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	address VARCHAR(20) NOT NULL,
+	name VARCHAR(20) NOT NULL,
+	floor INT(11) NOT NULL,
+	class VARCHAR(20) NOT NULL,
+	CONSTRAINT ClassRoom PRIMARY KEY(id)
+);
+
 Create Table SelfStudy (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	student_id VARCHAR(20) NOT NULL,
 	place VARCHAR(20) NOT NULL,
-	teacher_id VARCHAR(20) NOT NULL,
 	date DATETIME NOT NULL,
 	CONSTRAINT SelfStudy_PK PRIMARY KEY(id),
 	CONSTRAINT SelfStudy_FK2 FOREIGN KEY(student_id) REFERENCES User(id) ON DELETE CASCADE ON UPDATE CASCADE
