@@ -1,0 +1,9 @@
+package kh.study.cjy.model;
+
+public class SelfStudy {
+	public String name;
+	public String place;
+	public Teacher teacher;
+	public Student student;
+	public LocalDateTime date;
+}

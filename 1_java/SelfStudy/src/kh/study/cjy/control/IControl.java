@@ -1,5 +1,9 @@
 package kh.study.cjy.control;
 
-public interface IControl {
-	//CRUD
+import java.util.List;
+
+public interface IControl<T> {
+	List<T> select();
+	boolean insert(T type);
+	boolean delete(T type);
 }

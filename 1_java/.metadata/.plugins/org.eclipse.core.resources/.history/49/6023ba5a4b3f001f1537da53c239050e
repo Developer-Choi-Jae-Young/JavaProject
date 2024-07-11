@@ -1,0 +1,7 @@
+package kh.study.cjy.control;
+
+import kh.study.cjy.model.SelfStudy;
+
+public class SelfStudyControl implements IControl<SelfStudy> {
+
+}

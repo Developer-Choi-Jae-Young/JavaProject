@@ -1,0 +1,10 @@
+package kh.study.cjy.model;
+
+import java.time.LocalDateTime;
+
+public class SelfStudy {
+	public String place;
+	public Teacher teacher;
+	public Student student;
+	public LocalDateTime date;
+}

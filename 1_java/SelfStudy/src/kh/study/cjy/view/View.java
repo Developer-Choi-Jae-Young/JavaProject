@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import kh.study.cjy.control.FactoryMethodControl;
+import kh.study.cjy.control.IControl;
 import kh.study.cjy.control.RequestRegistUserControl;
 import kh.study.cjy.control.UserControl;
 import kh.study.cjy.database.DataSource;
@@ -19,9 +20,8 @@ import kh.study.cjy.model.User;
 public class View {
 	private Scanner sc = new Scanner(System.in);
 	private FactoryMethodControl fc = new FactoryMethodControl(); // 의존관계를 많이 해결했지만 원하는 메소드를 호출을 어떻게 할까?
-	private UserControl uc = new UserControl();
 	private RequestRegistUserControl rruc = new RequestRegistUserControl();
-
+	private IControl[] controlList = new IControl[ControlFactoryList.values().length];
 	public View() {
 		Banner.print();
 		
@@ -34,11 +34,15 @@ public class View {
 
 		boolean flag = false;
 		if (flag) {
-			if (uc.registUser("ADMIN", "ADMIN", "ADMIN", 0, '남', "0", "ADMIN", "ADMIN")) {
+			if (controlList[ControlFactoryList.USER.ordinal()].insert(new User(0, "ADMIN", "ADMIN", "ADMIN", 0, '남', "0", "ADMIN", "Admin", true))) {
 				System.out.println("회원가입을 완료하였습니다.");
 			} else {
 				System.out.println("중복된 아이디가 존재해 회원가입을 취소합니다.");
 			}
+		}
+		
+		for(int i = 0; i < controlList.length; i++) {
+			controlList[i] = fc.createContorl(ControlFactoryList.values()[i]);
 		}
 
 		while (true) {
@@ -62,7 +66,7 @@ public class View {
 		switch (num) {
 		case 1:
 			if (loginView()) {
-				loginAfterView(uc.getUser().getType());
+				loginAfterView(((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType());
 			}
 			break;
 		case 2:
@@ -92,7 +96,7 @@ public class View {
 		System.out.println("======================================");
 
 		String result = "Result : ";
-		if (uc.login(id, password)) {
+		if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).login(id, password)) {
 			result += "Login Success";
 			returnValue = true;
 		} else {
@@ -149,7 +153,7 @@ public class View {
 		char gender = sc.nextLine().charAt(0);
 		System.out.println("======================================");
 
-		if (rruc.registRequestRegistUser(id, password, name, age, gender, phone, email, type)) {
+		if (controlList[ControlFactoryList.REQUEST_REGIST_USER.ordinal()].insert(new RequestRegistUser(0, id, password, name, age, gender, phone, email, type, true))) {
 			System.out.println("회원가입을 완료하였습니다.");
 		} else {
 			System.out.println("중복된 아이디가 존재해 회원가입을 취소합니다.");
@@ -171,9 +175,9 @@ public class View {
 			System.out.println("1. 내정보");
 			System.out.println("2. 자습현황");
 			System.out.println("3. 로그아웃");
-			if (uc.getUser().getType().equals("ADMIN"))
+			if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 				System.out.println("4. 회원가입 요청처리"); // 관리자라면
-			if (uc.getUser().getType().equals("ADMIN"))
+			if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 				System.out.println("5. 회원 삭제"); // 관리자라면
 			System.out.println("======================================");
 			System.out.print("선택 : ");
@@ -194,11 +198,11 @@ public class View {
 				bflag = true;
 				break;
 			case 4:
-				if (uc.getUser().getType().equals("ADMIN"))
+				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 					acceptRequestRegistUser();// 관리자만 가능
 				break;
 			case 5:
-				if (uc.getUser().getType().equals("ADMIN"))
+				if (((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 					removeUser();// 관리자만 가능
 				break;
 			default:
@@ -216,7 +220,7 @@ public class View {
 
 		System.out.println("======================================");
 		// 관리자면 날짜별로 기록 확인할수 있도록 아니면 그냥 금일 날짜에 대한 기록만 출력
-		if (!uc.getUser().getType().equals("ADMIN")) {
+		if (!((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin")) {
 			// 오늘기록 print
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
@@ -239,11 +243,11 @@ public class View {
 		boolean returnValue = false;
 
 		System.out.println("======================================");
-		System.out.println("ID : " + uc.getUser().getId());
-		System.out.println("Name : " + uc.getUser().getName());
-		System.out.println("Gender : " + uc.getUser().getGender());
-		System.out.println("Email : " + uc.getUser().getEmail());
-		System.out.println("Phone : " + uc.getUser().getPhone());
+		System.out.println("ID : " + ((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getId());
+		System.out.println("Name : " + ((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getName());
+		System.out.println("Gender : " + ((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getGender());
+		System.out.println("Email : " + ((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getEmail());
+		System.out.println("Phone : " + ((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser().getPhone());
 		System.out.println("======================================");
 
 		System.out.print("비밀번호를 바꾸시겠습니까?(y/n) : ");
@@ -255,7 +259,7 @@ public class View {
 			String currentPassword = sc.nextLine();
 			System.out.print("바꿀 Password : ");
 			String changePassword = sc.nextLine();
-			uc.changePassword(currentPassword, changePassword);
+			((UserControl)controlList[ControlFactoryList.USER.ordinal()]).changePassword(currentPassword, changePassword);
 			System.out.println("비밀번호가 정상적으로 바뀌었습니다.");
 			returnValue = true;
 		} else {
@@ -266,7 +270,7 @@ public class View {
 	}
 
 	private void acceptRequestRegistUser() {
-		List userList = rruc.getRequestRegistUser();
+		List userList = controlList[ControlFactoryList.REQUEST_REGIST_USER.ordinal()].select();
 
 		System.out.println("======================================");
 		for (Object rru : userList) {
@@ -283,9 +287,8 @@ public class View {
 
 			RequestRegistUser rru = (RequestRegistUser) userList.get(num);
 			if (select == 'y' || select == 'Y') {
-				if (uc.registUser(rru.getUserId(), rru.getPassword(true), rru.getName(), rru.getAge(), rru.getGender(),
-						rru.getPhone(), rru.getEmail(), rru.getType())) {
-					if (rruc.deleteRequestRegistUser(rru.getUserId(), rru.getName(), rru.getAge(), rru.getPhone())) {
+				if (controlList[ControlFactoryList.USER.ordinal()].insert(rru)) {
+					if (controlList[ControlFactoryList.REQUEST_REGIST_USER.ordinal()].delete(rru)) {
 						System.out.println("회원가입을 완료하였습니다.");
 					} else {
 						System.out.println("처리중 문제가 발생");
@@ -305,7 +308,7 @@ public class View {
 				String phone = sc.nextLine();
 				// if(rruc.deleteRequestRegistUser(rru.getUserId(), rru.getName(), rru.getAge(),
 				// rru.getPhone())) {
-				if (rruc.deleteRequestRegistUser(id, name, age, phone)) {
+				if (controlList[ControlFactoryList.REQUEST_REGIST_USER.ordinal()].delete(new RequestRegistUser(id, name, age, phone))) {
 					System.out.println("해당항목을 목록에서 삭제 완료하였습니다.");
 				} else {
 					System.out.println("삭제가 실패 되어 이전으로 돌아갑니다.");
@@ -317,7 +320,7 @@ public class View {
 	}
 
 	public void removeUser() {
-		List userList = uc.getUserList();
+		List userList = controlList[ControlFactoryList.USER.ordinal()].select();
 		System.out.println("======================================");
 		for (Object u : userList) {
 			System.out.println((User) u);
@@ -335,7 +338,7 @@ public class View {
 		String phone = sc.nextLine();
 		// if(uc.deleteUser(rru.getUserId(), rru.getName(), rru.getAge(),
 		// rru.getPhone())) {
-		if (uc.deleteUser(id, name, age, phone)) {
+		if (controlList[ControlFactoryList.USER.ordinal()].delete(new User(id, name, age, phone))) {
 			System.out.println("해당항목을 회원에서 삭제 완료하였습니다.");
 		} else {
 			System.out.println("삭제가 실패 되어 이전으로 돌아갑니다.");

@@ -24,7 +24,14 @@ public class User {
 	public User() {
 
 	}
-
+	
+	public User(String userId, String name, Integer age, String phone) {
+		this.userId = userId;
+		this.name = name;
+		this.age = age;
+		this.phone = phone;
+	}
+	
 	public User(Integer id, String userId, String name, String password, Integer age, char gender, String phone,
 			String email, String type, boolean isEncoding) {
 		this.id = id;
@@ -106,8 +113,26 @@ public class User {
 		return returnValue;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String password, boolean isEncoding) {
+		if (isEncoding) {
+			try {
+				this.password = AESCrypto.encrypt(password);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				e.printStackTrace();
+			} catch (InvalidKeyException e) {
+				e.printStackTrace();
+			} catch (InvalidAlgorithmParameterException e) {
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.password = password;
+		}
 	}
 
 	public int getAge() {

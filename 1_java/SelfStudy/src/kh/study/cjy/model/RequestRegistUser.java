@@ -6,4 +6,8 @@ public class RequestRegistUser extends User{
 			String phone, String email, String type, boolean isEncoding) {
 		super(id, userId, name, password, age, gender, phone, email, type, isEncoding);
 	}
+
+	public RequestRegistUser(String userId, String name, Integer age, String phone) {
+		super(userId, name, age, phone);
+	}
 }

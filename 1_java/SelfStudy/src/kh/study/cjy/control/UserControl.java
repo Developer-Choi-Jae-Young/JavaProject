@@ -6,22 +6,14 @@ import java.util.List;
 import kh.study.cjy.dao.UserDao;
 import kh.study.cjy.model.User;
 
-public class UserControl implements IControl {
+public class UserControl implements IControl<User> {
 	private User u;
 	private UserDao ud = new UserDao();
 	
-	public List<User> getUserList() {
-		List<User> userList = new ArrayList<User>();
-		userList = ud.selectUser();
-		return userList;
-	}
-	
 	public boolean login(String userId, String userPassword) {
 		boolean returnValue = false;
-		List<User> userList = new ArrayList<User>();
-		userList = ud.selectUser();
-
-		for (User user : userList) {
+		
+		for (User user : select()) {
 			if (user.getUserId().equals(userId) && user.getPassword(true).equals(userPassword)) {
 				u = user;
 				returnValue = true;
@@ -32,39 +24,24 @@ public class UserControl implements IControl {
 		return returnValue;
 	}
 
-	public boolean registUser(String id, String password, String name, int age, char gender, String phone, String email,
-			String type) {
-		boolean returnValue = false;
-
-		if (duplicationUserId(id)) {
-			returnValue = ud.insertUser(new User(0, id, name, password, age, gender, phone, email, type, true));
-		} else {
-			returnValue = false;
-		}
-
-		return returnValue;
-	}
-
 	public boolean changePassword(String currentPassword, String changePassword) {
 		boolean returnValue = false;
-
+		
 		if (u != null) {
 			if (u.getPassword(true).equals(currentPassword)) {
-				u.setPassword(changePassword);
-				ud.updateUsserPassword(u, changePassword);
+				u.setPassword(changePassword,true);
+				ud.updateUsserPassword(u);
 				returnValue = true;
 			}
 		}
-
+		
 		return returnValue;
 	}
-
+	
 	private boolean duplicationUserId(String userId) {
 		boolean returnValue = true;
-		List<User> userList = new ArrayList<User>();
-		userList = ud.selectUser();
 
-		for (User user : userList) {
+		for (User user : select()) {
 			if (user.getUserId().equals(userId)) {
 				returnValue = false;
 				break;
@@ -78,7 +55,28 @@ public class UserControl implements IControl {
 		return u;
 	}
 
-	public boolean deleteUser(String id, String name, int age, String phone) {
-		return ud.deleteUser(id, name, age, phone);
+	@Override
+	public List<User> select() {
+		List<User> userList = new ArrayList<User>();
+		userList = ud.selectUser();
+		return userList;
+	}
+
+	@Override
+	public boolean insert(User type) {
+		boolean returnValue = false;
+
+		if (duplicationUserId(type.getUserId())) {
+			returnValue = ud.insertUser(type);
+		} else {
+			returnValue = false;
+		}
+
+		return returnValue;
+	}
+
+	@Override
+	public boolean delete(User type) {
+		return ud.deleteUser(type.getUserId(), type.getName(), type.getAge(), type.getPhone());
 	}
 }

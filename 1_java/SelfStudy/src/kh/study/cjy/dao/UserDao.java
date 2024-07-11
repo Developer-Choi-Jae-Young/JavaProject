@@ -6,9 +6,6 @@ import java.util.List;
 
 import kh.study.cjy.database.DataSource;
 import kh.study.cjy.database.Functional;
-import kh.study.cjy.model.Admin;
-import kh.study.cjy.model.Student;
-import kh.study.cjy.model.Teacher;
 import kh.study.cjy.model.User;
 
 public class UserDao extends Functional {
@@ -32,20 +29,7 @@ public class UserDao extends Functional {
 				String email = rs.getString("email");
 				String type = rs.getString("type");
 				
-				switch (type) {
-				case "Student":
-					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
-					break;
-				case "Teacher":
-					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
-					break;
-				case "Admin":
-					userList.add(new Admin(id, userId, name, password, age, gender, phone, email, type, false));
-					break;
-				default:
-					break;
-				}
-				//userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
+				userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,10 +59,10 @@ public class UserDao extends Functional {
 	/*
 	 * User Table Data Update
 	 */
-	public boolean updateUsserPassword(User user, String password) {
+	public boolean updateUsserPassword(User user) {
 		boolean returnValue = false;
 
-		if (CallSqlOther(DataSource.Connect(), "Update User set password = \"" + password + "\" Where userid = \"" + user.getUserId() + "\"") > 0) {
+		if (CallSqlOther(DataSource.Connect(), "Update User set password = \"" + user.getPassword(false) + "\" Where userid = \"" + user.getUserId() + "\"") > 0) {
 			returnValue = true;
 		}
 

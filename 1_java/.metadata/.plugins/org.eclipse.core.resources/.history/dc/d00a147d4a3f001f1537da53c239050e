@@ -1,0 +1,7 @@
+package kh.study.cjy.control;
+
+public interface IControl {
+	List<T> select();
+	boolean insert(T type);
+	boolean delete(T type);
+}
