@@ -196,6 +196,8 @@ public class View {
 			System.out.println("2. 자습현황");
 			if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Student"))
 				System.out.println("3. 자습신청"); // 학생이면
+			if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Student"))
+				System.out.println("4. 자습삭제"); // 학생이면
 			if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 				System.out.println("3. 회원가입 요청처리"); // 관리자라면
 			if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
@@ -231,6 +233,9 @@ public class View {
 			case 4:
 				if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
 					removeUser();// 관리자만 가능
+				if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType()
+						.equals("Student"))
+					removeSelfStudySchdule(); // 학생만 가능
 				break;
 			case 5:
 				if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
@@ -266,7 +271,7 @@ public class View {
 				Student st = (Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss).getStudent();
 				((ClassRoomControl) controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]).setClassRoomFromUser(st);
 				
-				if(st.getClassRoom().getClassName() == ((Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser()).getClassRoom().getClassName()) {
+				if(st.getClassRoom().getName().equals(((Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser()).getClassRoom().getName()) && ((Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser()).getClassRoom().getFloor() == st.getClassRoom().getFloor()) {
 					System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss)); // 오늘 &&해당 건물의 층의 자습대장 출력
 				}
 			}
@@ -277,6 +282,12 @@ public class View {
 			int month = sc.nextInt();
 			System.out.print("확인하고 싶은 일 : ");
 			int day = sc.nextInt();
+			sc.nextLine();
+			System.out.print("확인하고 싶은 건물 이름 : ");
+			String buildingName = sc.nextLine();
+			System.out.print("확인하고 싶은 건물의 층수 : ");
+			int floor = sc.nextInt();
+			sc.nextLine();
 			String checkDay = String.format("%d-%d-%d", year,month,day);
 			Calendar cal = Calendar.getInstance();
 			cal.set(year, month - 1, day);
@@ -284,15 +295,25 @@ public class View {
 			if (currentDay.compareTo(cal.getTime()) != -1) {
 				for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
 						.selectFromDate(checkDay)) {
-					//((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss)
-					System.out.println(); // 해당 건물의 층의 자습대장 출력 해야함
+					
+					Student st = (Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss).getStudent();
+					((ClassRoomControl) controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]).setClassRoomFromUser(st);
+					
+					if(st.getClassRoom().getName().equals(buildingName) && st.getClassRoom().getFloor() == floor) {
+						System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss)); // 오늘 &&해당 건물의 층의 자습대장 출력
+					}
 				}
 			} else {
 				System.out.println("오늘보다 날짜가 더 큽니다. 다시 한번 확인해주세요.");
 			}
 		}
 	}
-
+	
+	private void removeSelfStudySchdule() {
+		System.out.println("======================================");
+		System.out.println("======================================");
+	}
+	
 	private void insertSelfStudySchdule() {
 		System.out.println("======================================");
 		Date currentDay = new Date(dayTime.getYear(), dayTime.getMonth(), dayTime.getDay(), 17, 51);
