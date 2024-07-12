@@ -28,6 +28,9 @@
 ![프로젝트 클래스 다이어그램](https://github.com/Developer-Choi-Jae-Young/JavaProject/blob/d5f5272d968d9643d2215e0424714b53740facb6/1_java/ClassDiagram/ClassDiagram_View.png)
 ![프로젝트 클래스 다이어그램](https://github.com/Developer-Choi-Jae-Young/JavaProject/blob/d5f5272d968d9643d2215e0424714b53740facb6/1_java/ClassDiagram/ClassDiagram_Run.png)
 
+## 🧾 프로젝트 ERD
+![프로젝트 ERD](https://github.com/Developer-Choi-Jae-Young/JavaProject/blob/d5f5272d968d9643d2215e0424714b53740facb6/1_java/ERD/JavaMiniProject.png)
+
 ## 📌 주요 기능
 - 로그인
   - 설명
