@@ -68,7 +68,7 @@ public class View {
 
 	private boolean mainView() {
 		boolean returnValue = false;
-		System.out.println();
+
 		System.out.println("===============MAIN===================");
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");
@@ -487,14 +487,14 @@ public class View {
 				System.out.println((User) u);
 			}
 		}
-		System.out.println();
+
 		System.out.print("강의실 지정할 회원 아이디 : ");
 		String userId = sc.nextLine();
 		System.out.print("강의실 지정할 회원 이름 : ");
 		String name = sc.nextLine();
 		System.out.print("지정할 강의실 (반) : ");
 		char classRoom = sc.nextLine().charAt(0);
-		System.out.println();
+
 		for (Object u : userList) {
 			if (((User) u).getUserId().equals(userId) && ((User) u).getName().equals(name)) {
 				if (u instanceof Student) {
@@ -522,7 +522,6 @@ public class View {
 		System.out.print("강사 지정할 회원 이름 : ");
 		String name = sc.nextLine();
 		System.out.println();
-		
 		for (Object u : userList) {
 			if (u instanceof Teacher) {
 				System.out.println((User) u);
@@ -550,8 +549,8 @@ public class View {
 
 	private boolean printMyInformation() {
 		boolean returnValue = false;
-		System.out.println();
-		System.out.println("==========My Information=============");
+
+		System.out.println("======================================");
 		System.out.println("ID : " + ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getId());
 		System.out.println(
 				"Name : " + ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getName());
@@ -562,11 +561,11 @@ public class View {
 		System.out.println(
 				"Phone : " + ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getPhone());
 		System.out.println("======================================");
-		System.out.println();
+
 		System.out.print("비밀번호를 바꾸시겠습니까?(y/n) : ");
 		char select = sc.next().charAt(0);
 		sc.nextLine();
-		System.out.println();
+
 		if (select == 'y' || select == 'Y') {
 			System.out.print("현재 Password : ");
 			String currentPassword = sc.nextLine();
@@ -585,13 +584,13 @@ public class View {
 
 	private void acceptRequestRegistUser() {
 		List userList = controlList[ControlFactoryList.REQUEST_REGIST_USER.ordinal()].select();
-		System.out.println();
-		System.out.println("======Accept Request Register========");
+
+		System.out.println("======================================");
 		for (Object rru : userList) {
 			System.out.println((RequestRegistUser) rru);
 		}
 		System.out.println("======================================");
-		System.out.println();
+
 		if (userList.size() > 0) {
 			System.out.print("회원가입 수락/삭제할 번호 : ");
 			int num = sc.nextInt();
@@ -636,15 +635,14 @@ public class View {
 
 	public void removeUser() {
 		List userList = controlList[ControlFactoryList.USER.ordinal()].select();
-		System.out.println();
-		System.out.println("============Remove User==============");
+		System.out.println("======================================");
 		for (Object u : userList) {
 			if ((u instanceof Student) || (u instanceof Teacher)) {
 				System.out.println((User) u);
 			}
 		}
 		System.out.println("======================================");
-		System.out.println();
+
 		System.out.printf("삭제할 대상의 아이디 : ");
 		String id = sc.nextLine();
 		System.out.printf("삭제할 대상의 이름 : ");

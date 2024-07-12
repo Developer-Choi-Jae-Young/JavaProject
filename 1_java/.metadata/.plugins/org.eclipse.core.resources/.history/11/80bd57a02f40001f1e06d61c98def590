@@ -68,7 +68,7 @@ public class View {
 
 	private boolean mainView() {
 		boolean returnValue = false;
-		System.out.println();
+
 		System.out.println("===============MAIN===================");
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");
@@ -644,7 +644,7 @@ public class View {
 			}
 		}
 		System.out.println("======================================");
-		System.out.println();
+
 		System.out.printf("삭제할 대상의 아이디 : ");
 		String id = sc.nextLine();
 		System.out.printf("삭제할 대상의 이름 : ");

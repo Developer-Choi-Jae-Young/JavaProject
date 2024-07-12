@@ -68,7 +68,7 @@ public class View {
 
 	private boolean mainView() {
 		boolean returnValue = false;
-		System.out.println();
+
 		System.out.println("===============MAIN===================");
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");

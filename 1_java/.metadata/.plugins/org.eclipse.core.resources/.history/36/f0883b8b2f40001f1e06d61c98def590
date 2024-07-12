@@ -68,7 +68,7 @@ public class View {
 
 	private boolean mainView() {
 		boolean returnValue = false;
-		System.out.println();
+
 		System.out.println("===============MAIN===================");
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");
@@ -591,7 +591,7 @@ public class View {
 			System.out.println((RequestRegistUser) rru);
 		}
 		System.out.println("======================================");
-		System.out.println();
+
 		if (userList.size() > 0) {
 			System.out.print("회원가입 수락/삭제할 번호 : ");
 			int num = sc.nextInt();
@@ -636,15 +636,14 @@ public class View {
 
 	public void removeUser() {
 		List userList = controlList[ControlFactoryList.USER.ordinal()].select();
-		System.out.println();
-		System.out.println("============Remove User==============");
+		System.out.println("======================================");
 		for (Object u : userList) {
 			if ((u instanceof Student) || (u instanceof Teacher)) {
 				System.out.println((User) u);
 			}
 		}
 		System.out.println("======================================");
-		System.out.println();
+
 		System.out.printf("삭제할 대상의 아이디 : ");
 		String id = sc.nextLine();
 		System.out.printf("삭제할 대상의 이름 : ");
