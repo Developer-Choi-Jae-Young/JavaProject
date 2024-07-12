@@ -1,0 +1,34 @@
+package kh.study.cjy.control;
+
+import java.util.List;
+
+import kh.study.cjy.dao.SelfStudyDao;
+import kh.study.cjy.model.SelfStudy;
+import kh.study.cjy.model.User;
+
+public class SelfStudyControl implements IControl<SelfStudy> {
+	private SelfStudyDao ssd = new SelfStudyDao();
+
+	@Override
+	public List<SelfStudy> select() {
+		return null;
+	}
+
+	@Override
+	public boolean insert(SelfStudy type) {
+		System.out.println(type);
+		return false;
+	}
+
+	@Override
+	public boolean delete(SelfStudy type) {
+		return false;
+	}
+	
+	public SelfStudy searchTodaySelfStudy(User u) {
+		List<SelfStudy> selfStudyList = ssd.selectSelfStudyFromUser(u);
+		
+		if(selfStudyList.isEmpty()) return null;
+		else return selfStudyList.get(0);
+	}
+}

@@ -1,18 +1,28 @@
 package kh.study.cjy.model;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
 
 public class SelfStudy {
 	private int id;
-	private String place;
-	private String student;
-	private LocalDateTime date;
+	private Student student;
+	private Date date;
+	private Time time;
+	private int studentId;
 	
-	public SelfStudy(int id, String place, String student, LocalDateTime date) {
+	public SelfStudy(int id, Student student, Date date, Time time) {
 		this.id = id;
-		this.place = place;
 		this.student = student;
 		this.date = date;
+		this.time = time;
+	}
+	
+	public SelfStudy(int id, Student student, Date date, Time time, int studentId) {
+		this.id = id;
+		this.student = student;
+		this.date = date;
+		this.time = time;
+		this.studentId = studentId;
 	}
 
 	public int getId() {
@@ -23,32 +33,40 @@ public class SelfStudy {
 		this.id = id;
 	}
 
-	public String getPlace() {
-		return place;
-	}
-
-	public void setPlace(String place) {
-		this.place = place;
-	}
-
-	public String getStudent() {
+	public Student getStudent() {
 		return student;
 	}
 
-	public void setStudent(String student) {
+	public void setStudent(Student student) {
 		this.student = student;
 	}
 
-	public LocalDateTime getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
+	
+	public int getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+
 	@Override
 	public String toString() {
-		return "[place=" + place + ", student=" + student + ", date=" + date + "]";
+		return "[student=" + student + ", date=" + date + ", time=" + time +"]";
 	}
 }

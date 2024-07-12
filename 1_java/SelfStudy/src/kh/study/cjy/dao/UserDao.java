@@ -52,6 +52,48 @@ public class UserDao extends Functional {
 
 		return userList;
 	}
+	
+	/*
+	 * User Table Create
+	 */
+	public User selectUserFromId(int idx) {
+		List<User> userList = new ArrayList<User>();
+
+		try {
+			CallSqlSelect(DataSource.Connect(), "Select * from User where id = " + idx + ";");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String userId = rs.getString("userid");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				int age = rs.getInt("age");
+				char gender = rs.getString("gender").charAt(0);
+				String phone = rs.getString("phone"); 
+				String email = rs.getString("email");
+				String type = rs.getString("type");
+				
+				switch (type) {
+				case "Student" : 
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				case "Teacher" :
+					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				default:
+					userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(rs);
+			Close(stmt);
+		}
+
+		return userList.get(0);
+	}
 
 	/*
 	 * User Table Data Insert

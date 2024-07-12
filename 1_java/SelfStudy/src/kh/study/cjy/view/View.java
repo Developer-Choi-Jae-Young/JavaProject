@@ -1,5 +1,6 @@
 package kh.study.cjy.view;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 import kh.study.cjy.control.ClassRoomControl;
 import kh.study.cjy.control.FactoryMethodControl;
 import kh.study.cjy.control.IControl;
-import kh.study.cjy.control.RequestRegistUserControl;
+import kh.study.cjy.control.SelfStudyControl;
 import kh.study.cjy.control.UserControl;
 import kh.study.cjy.database.DataSource;
 import kh.study.cjy.etc.Banner;
@@ -20,13 +21,13 @@ import kh.study.cjy.model.RequestRegistUser;
 import kh.study.cjy.model.SelfStudy;
 import kh.study.cjy.model.Student;
 import kh.study.cjy.model.Teacher;
+import kh.study.cjy.model.ToDayTime;
 import kh.study.cjy.model.User;
 
 public class View {
 	private Scanner sc = new Scanner(System.in);
-	private FactoryMethodControl fc = new FactoryMethodControl(); // 의존관계를 많이 해결했지만 원하는 메소드를 호출을 어떻게 할까?
-	private RequestRegistUserControl rruc = new RequestRegistUserControl();
 	private IControl[] controlList = new IControl[ControlFactoryList.values().length];
+	private ToDayTime dayTime;
 
 	public View() {
 		Banner.print();
@@ -38,10 +39,15 @@ public class View {
 
 		DataSource.Init();
 
+		FactoryMethodControl fc = new FactoryMethodControl();
 		for (int i = 0; i < controlList.length; i++) {
 			controlList[i] = fc.createContorl(ControlFactoryList.values()[i]);
 		}
 
+		dayTime = new ToDayTime(0, 0, 0);
+		dayTime.start();
+
+		// ADMIN 계정은 처음에 어떻게 추가하고 관리할까? 고민좀 해보자
 		boolean flag = false;
 		if (flag) {
 			if (controlList[ControlFactoryList.USER.ordinal()]
@@ -53,8 +59,10 @@ public class View {
 		}
 
 		while (true) {
-			if (mainView())
+			if (mainView()) {
+				dayTime.stopThread();
 				break;
+			}
 		}
 	}
 
@@ -214,7 +222,7 @@ public class View {
 					acceptRequestRegistUser();// 관리자만 가능
 				if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType()
 						.equals("Student"))
-					insertSelfStudySchdule();
+					insertSelfStudySchdule(); // 학생만 가능
 				break;
 			case 4:
 				if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin"))
@@ -246,10 +254,12 @@ public class View {
 
 	private void printTodaySelfStudySchdule(String type) {
 		System.out.println("======================================");
-		// 관리자면 날짜별로 기록 확인할수 있도록 아니면 그냥 금일 날짜에 대한 기록만 출력
+		String toDay = String.format("%d-%d-%d", dayTime.getYear(), dayTime.getMonth(), dayTime.getDay());
 		if (!((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin")) {
-			for (Object ss : controlList[ControlFactoryList.SELF_STUDY.ordinal()].select()) {
-				System.out.println((SelfStudy) ss); // 오늘 &&해당 건물의 층의 자습대장 출력
+			for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
+					.selectFromDate(toDay)) {
+				System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()])
+						.setUserFromSelfStudy((SelfStudy) ss)); // 오늘 &&해당 건물의 층의 자습대장 출력
 			}
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
@@ -258,13 +268,16 @@ public class View {
 			int month = sc.nextInt();
 			System.out.print("확인하고 싶은 일 : ");
 			int day = sc.nextInt();
-
+			String checkDay = String.format("%d-%d-%d", year,month,day);
 			Calendar cal = Calendar.getInstance();
 			cal.set(year, month - 1, day);
 			Date currentDay = new Date();
-			// 오늘보다 날짜가 더 큰경우 볼수 없으니 예외처리
-			if (currentDay.compareTo(cal.getTime()) == 1) {
-				// 해당 날짜의 모든기록 print
+			if (currentDay.compareTo(cal.getTime()) != -1) {
+				for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
+						.selectFromDate(checkDay)) {
+					System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()])
+							.setUserFromSelfStudy((SelfStudy) ss)); // 해당 건물의 층의 자습대장 출력 해야함
+				}
 			} else {
 				System.out.println("오늘보다 날짜가 더 큽니다. 다시 한번 확인해주세요.");
 			}
@@ -273,6 +286,38 @@ public class View {
 
 	private void insertSelfStudySchdule() {
 		System.out.println("======================================");
+		Date currentDay = new Date(dayTime.getYear(), dayTime.getMonth(), dayTime.getDay(), 17, 51);
+		String toDay = String.format("%d-%d-%d", dayTime.getYear(), dayTime.getMonth(), dayTime.getDay());
+
+		SelfStudy ss = ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy(
+				((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()]).searchTodaySelfStudy(
+						((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser(), toDay));
+		if (ss != null)
+			System.out.println("오늘 자습을 신청한 기록이 있어 추가 신청이 불가합니다. 이전으로 화면으로 돌아갑니다.");
+
+		while (ss == null) {
+			System.out.print("시간 : ");
+			int hour = sc.nextInt();
+			System.out.print("분 : ");
+			int minute = sc.nextInt();
+
+			Date inputDay = new Date(dayTime.getYear(), dayTime.getMonth(), dayTime.getDay(), hour, minute);
+
+			if (currentDay.compareTo(inputDay) == 1) {
+				System.out.println("시간을 잘못입력하였습니다. 다시 입력해주세요.");
+			} else {
+				if (controlList[ControlFactoryList.SELF_STUDY.ordinal()].insert(new SelfStudy(0,
+						(Student) ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser(),
+						java.sql.Date.valueOf(
+								String.format("%d-%d-%d", dayTime.getYear(), dayTime.getMonth(), dayTime.getDay())),
+						Time.valueOf(String.format("%d:%d:00", hour, minute))))) {
+					System.out.println("자습대장을에 기록을 완료하였습니다.");
+				} else {
+					System.out.println("자습대장을에 기록을 실패하여 이전 화면으로 돌아갑니다.");
+				}
+				break;
+			}
+		}
 		System.out.println("======================================");
 	}
 
@@ -282,7 +327,7 @@ public class View {
 			System.out.println("1. 강의실 확인");
 			System.out.println("2. 강의실 추가");
 			System.out.println("3. 강의실 삭제");
-			//System.out.println("4. 강의실 수정");
+			// System.out.println("4. 강의실 수정");
 			System.out.println("9. 이전 화면으로");
 			System.out.println("======================================");
 			System.out.print("선택 : ");
@@ -300,7 +345,7 @@ public class View {
 				deleteClassRoom();
 				break;
 			case 4:
-				//updateClassRoom();
+				// updateClassRoom();
 				break;
 			case 9:
 				System.out.println("이전 화면으로 돌아갑니다.");
@@ -311,19 +356,19 @@ public class View {
 			}
 		}
 	}
-	
+
 	private void searchClassRoom() {
 		System.out.println("======================================");
-		for(Object cr : controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()].select()) {
-			System.out.println((ClassRoom)cr);
+		for (Object cr : controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()].select()) {
+			System.out.println((ClassRoom) cr);
 		}
 		System.out.println("======================================");
 	}
-	
+
 	private void deleteClassRoom() {
 		System.out.println("======================================");
 		searchClassRoom();
-		
+
 		System.out.print("주소 : ");
 		String address = sc.nextLine();
 		System.out.print("건물 이름 : ");
@@ -333,15 +378,16 @@ public class View {
 		sc.nextLine();
 		System.out.print("반 이름 : ");
 		char className = sc.nextLine().charAt(0);
-		
-		if(controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()].delete(new ClassRoom(0, address, building, floor, className))) {
+
+		if (controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]
+				.delete(new ClassRoom(0, address, building, floor, className))) {
 			System.out.println("데이터 삭제에 성공하였습니다.");
 		} else {
 			System.out.println("데이터 삭제에 실패하였습니다.");
 		}
 		System.out.println("======================================");
 	}
-	
+
 	private void insertClassRoom() {
 		System.out.println("======================================");
 		System.out.print("주소 : ");
@@ -353,26 +399,29 @@ public class View {
 		sc.nextLine();
 		System.out.print("반 이름 : ");
 		char className = sc.nextLine().charAt(0);
-		
-		if(controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()].insert(new ClassRoom(0, address, building, floor, className))) {
+
+		if (controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]
+				.insert(new ClassRoom(0, address, building, floor, className))) {
 			System.out.println("데이터 입력에 성공하였습니다.");
 		} else {
 			System.out.println("데이터 입력에 실패하였습니다.");
 		}
 		System.out.println("======================================");
 	}
-	
+
 	private void updateClassRoom() {
 		System.out.println("======================================");
 		System.out.println("기능 구현 의미가 있을까?");
 		System.out.println("======================================");
 	}
-	
+
 	private void insertClassRoomForUser() {
 		System.out.println("======================================");
 		List userList = controlList[ControlFactoryList.USER.ordinal()].select();
 		for (Object u : userList) {
-			System.out.println((User) u);
+			if (u instanceof Student) {
+				System.out.println((User) u);
+			}
 		}
 
 		System.out.print("강의실 지정할 회원 아이디 : ");
@@ -418,7 +467,7 @@ public class View {
 		String teacherId = sc.nextLine();
 		System.out.print("지정할 강사 이름 : ");
 		String teacherName = sc.nextLine();
-
+		// 이부분 과연 View에 있어도 되는걸까? 고민좀 해보자!!
 		for (Object u : userList) {
 			if (((User) u).getUserId().equals(userId) && ((User) u).getName().equals(name)) {
 				if (u instanceof Student) {
@@ -522,7 +571,9 @@ public class View {
 		List userList = controlList[ControlFactoryList.USER.ordinal()].select();
 		System.out.println("======================================");
 		for (Object u : userList) {
-			System.out.println((User) u);
+			if ((u instanceof Student) || (u instanceof Teacher)) {
+				System.out.println((User) u);
+			}
 		}
 		System.out.println("======================================");
 

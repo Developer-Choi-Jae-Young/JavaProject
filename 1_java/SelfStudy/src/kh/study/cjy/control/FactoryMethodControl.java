@@ -22,7 +22,6 @@ public class FactoryMethodControl {
 		case CLASS_ROOM_CONTROL:
 			control = new ClassRoomControl();
 			break;
-			
 		default:
 			break;
 		}

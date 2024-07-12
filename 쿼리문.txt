@@ -40,8 +40,8 @@ Create Table ClassRoom (
 Create Table SelfStudy (
 	id INT(11) NOT NULL AUTO_INCREMENT,
 	student_id INT(11) NOT NULL,
-	place VARCHAR(20) NOT NULL,
-	date DATETIME NOT NULL,
+	date DATE NOT NULL,
+	time TIME NOT NULL,
 	CONSTRAINT SelfStudy_PK PRIMARY KEY(id),
 	CONSTRAINT SelfStudy_FK2 FOREIGN KEY(student_id) REFERENCES User(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

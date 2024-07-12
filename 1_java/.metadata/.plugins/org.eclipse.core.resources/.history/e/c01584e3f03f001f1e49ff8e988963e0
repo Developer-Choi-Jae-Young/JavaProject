@@ -1,0 +1,7 @@
+package kh.study.cjy.model;
+
+public class ToDayTime {
+	private String year;
+	private String month;
+	private String day;
+}

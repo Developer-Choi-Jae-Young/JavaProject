@@ -1,0 +1,43 @@
+package kh.study.cjy.dao;
+
+import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+import kh.study.cjy.database.DataSource;
+import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.SelfStudy;
+import kh.study.cjy.model.Student;
+import kh.study.cjy.model.Teacher;
+import kh.study.cjy.model.User;
+
+public class SelfStudyDao extends Functional{
+	/*
+	 * User Table Create
+	 */
+	public List<SelfStudy> selectUser() {
+		List<SelfStudy> selfStudyList = new ArrayList<SelfStudy>();
+
+		try {
+			CallSqlSelect(DataSource.Connect(), "Select * from SelfStudy where userid = " + 1 + ";");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int userId = rs.getInt("student_id");
+				Date date = rs.getDate("date");
+				Time time = rs.getTime("time");
+				
+				selfStudyList.add(new SelfStudy(id, userId, name, password, age, gender, phone, email, type, false));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(rs);
+			Close(stmt);
+		}
+
+		return selfStudyList;
+	}
+}
