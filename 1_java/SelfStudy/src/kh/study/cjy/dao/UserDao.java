@@ -6,6 +6,7 @@ import java.util.List;
 
 import kh.study.cjy.database.DataSource;
 import kh.study.cjy.database.Functional;
+import kh.study.cjy.model.ClassRoom;
 import kh.study.cjy.model.Student;
 import kh.study.cjy.model.Teacher;
 import kh.study.cjy.model.User;
@@ -30,10 +31,12 @@ public class UserDao extends Functional {
 				String phone = rs.getString("phone"); 
 				String email = rs.getString("email");
 				String type = rs.getString("type");
+				int classId = rs.getInt("class_id");
+				int teacherId = rs.getInt("teacher_id");
 				
 				switch (type) {
 				case "Student" : 
-					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false, classId, teacherId));
 					break;
 				case "Teacher" :
 					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
@@ -72,10 +75,12 @@ public class UserDao extends Functional {
 				String phone = rs.getString("phone"); 
 				String email = rs.getString("email");
 				String type = rs.getString("type");
+				int classId = rs.getInt("class_id");
+				int teacherId = rs.getInt("teacher_id");
 				
 				switch (type) {
 				case "Student" : 
-					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false));
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false, classId, teacherId));
 					break;
 				case "Teacher" :
 					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
@@ -91,8 +96,9 @@ public class UserDao extends Functional {
 			Close(rs);
 			Close(stmt);
 		}
-
-		return userList.get(0);
+		
+		if(userList.isEmpty()) return null;
+		else return userList.get(0);
 	}
 
 	/*
@@ -169,5 +175,50 @@ public class UserDao extends Functional {
 			}
 		}
 		return returnValue;
+	}
+	
+	/*
+	 * User Table Create
+	 */
+	public User selectUserFromTeacherId(User user) {
+		List<User>userList = new ArrayList<User>();
+
+		try {
+			CallSqlSelect(DataSource.Connect(), "Select * from User where id = "+ ((Student)user).getTeacherId() + ";");
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String userId = rs.getString("userid");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				int age = rs.getInt("age");
+				char gender = rs.getString("gender").charAt(0);
+				String phone = rs.getString("phone"); 
+				String email = rs.getString("email");
+				String type = rs.getString("type");
+				int classId = rs.getInt("class_id");
+				int teacherId = rs.getInt("teacher_id");
+				
+				switch (type) {
+				case "Student" : 
+					userList.add(new Student(id, userId, name, password, age, gender, phone, email, type, false, classId, teacherId));
+					break;
+				case "Teacher" :
+					userList.add(new Teacher(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				default:
+					userList.add(new User(id, userId, name, password, age, gender, phone, email, type, false));
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Close(rs);
+			Close(stmt);
+		}
+		
+		if(userList.isEmpty()) return null;
+		else return userList.get(0);
 	}
 }

@@ -112,6 +112,10 @@ public class View {
 
 		String result = "Result : ";
 		if (((UserControl) controlList[ControlFactoryList.USER.ordinal()]).login(id, password)) {
+			if(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser() instanceof Student) {
+				((ClassRoomControl) controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]).setClassRoomFromUser(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser());				
+				((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setTeacherFromUser(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser());
+			}
 			result += "Login Success";
 			returnValue = true;
 		} else {
@@ -258,8 +262,13 @@ public class View {
 		if (!((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser().getType().equals("Admin")) {
 			for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
 					.selectFromDate(toDay)) {
-				System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()])
-						.setUserFromSelfStudy((SelfStudy) ss)); // 오늘 &&해당 건물의 층의 자습대장 출력
+				
+				Student st = (Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss).getStudent();
+				((ClassRoomControl) controlList[ControlFactoryList.CLASS_ROOM_CONTROL.ordinal()]).setClassRoomFromUser(st);
+				
+				if(st.getClassRoom().getClassName() == ((Student)((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser()).getClassRoom().getClassName()) {
+					System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss)); // 오늘 &&해당 건물의 층의 자습대장 출력
+				}
 			}
 		} else {
 			System.out.print("확인하고 싶은 연도 : ");
@@ -275,8 +284,8 @@ public class View {
 			if (currentDay.compareTo(cal.getTime()) != -1) {
 				for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
 						.selectFromDate(checkDay)) {
-					System.out.println(((UserControl) controlList[ControlFactoryList.USER.ordinal()])
-							.setUserFromSelfStudy((SelfStudy) ss)); // 해당 건물의 층의 자습대장 출력 해야함
+					//((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy((SelfStudy) ss)
+					System.out.println(); // 해당 건물의 층의 자습대장 출력 해야함
 				}
 			} else {
 				System.out.println("오늘보다 날짜가 더 큽니다. 다시 한번 확인해주세요.");

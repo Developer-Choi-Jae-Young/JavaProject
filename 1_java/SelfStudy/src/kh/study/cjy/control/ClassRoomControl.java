@@ -5,6 +5,7 @@ import java.util.List;
 
 import kh.study.cjy.dao.ClassRoomDao;
 import kh.study.cjy.model.ClassRoom;
+import kh.study.cjy.model.Student;
 import kh.study.cjy.model.User;
 
 public class ClassRoomControl implements IControl<ClassRoom>{
@@ -59,5 +60,10 @@ public class ClassRoomControl implements IControl<ClassRoom>{
 		}
 		
 		return classRoom;
+	}
+	
+	public User setClassRoomFromUser(User user) {
+		((Student)user).setClassRoom(crd.selectFromUser(user));
+		return user;
 	}
 }

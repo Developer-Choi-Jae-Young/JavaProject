@@ -105,10 +105,16 @@ public class UserControl implements IControl<User> {
 	
 	public SelfStudy setUserFromSelfStudy(SelfStudy selfStudy) {
 		if(selfStudy != null) {			
-			selfStudy.setStudent((Student)ud.selectUserFromId(selfStudy.getStudentId()));
+			User user = ud.selectUserFromId(selfStudy.getStudentId());
+			selfStudy.setStudent((Student)setTeacherFromUser(user));
 			return selfStudy;
 		} else {
 			return null;
 		}
+	}
+	
+	public User setTeacherFromUser(User user) {
+		((Student)user).setTeacher((Teacher)ud.selectUserFromTeacherId(user));
+		return user;
 	}
 }
