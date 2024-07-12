@@ -84,10 +84,10 @@ public class SelfStudyDao extends Functional{
 	/*
 	 * User Table Data Delete
 	 */
-	public boolean deleteSelfStudy(SelfStudy selfStudy) {
+	public boolean deleteSelfStudy(String userid, String name, int age, String phone) {
 		boolean returnValue = false;
 
-		if (CallSqlOther(DataSource.Connect(), "Delete from SelfStudy Where student_id = " + selfStudy.getStudentId() + ";") > 0) {
+		if (CallSqlOther(DataSource.Connect(), "Delete from User Where userid = \"" + userid + "\" AND name = \"" + name + "\" AND age = " + age + " AND phone = \"" + phone + "\";") > 0) {
 			returnValue = true;
 		}
 

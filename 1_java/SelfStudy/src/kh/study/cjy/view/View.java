@@ -288,10 +288,12 @@ public class View {
 			System.out.print("확인하고 싶은 건물의 층수 : ");
 			int floor = sc.nextInt();
 			sc.nextLine();
+			
 			String checkDay = String.format("%d-%d-%d", year,month,day);
 			Calendar cal = Calendar.getInstance();
 			cal.set(year, month - 1, day);
 			Date currentDay = new Date();
+			
 			if (currentDay.compareTo(cal.getTime()) != -1) {
 				for (Object ss : ((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()])
 						.selectFromDate(checkDay)) {
@@ -311,6 +313,23 @@ public class View {
 	
 	private void removeSelfStudySchdule() {
 		System.out.println("======================================");
+		String toDay = String.format("%d-%d-%d", dayTime.getYear(), dayTime.getMonth(), dayTime.getDay());
+		//1. 오늘 기록한적이 있는가? 있으면 삭제 진행 없으면 바로 return
+		//2. 있다면 오늘 날짜 기준으로 
+		SelfStudy ss = ((UserControl) controlList[ControlFactoryList.USER.ordinal()]).setUserFromSelfStudy(
+				((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()]).searchTodaySelfStudy(
+						((UserControl) controlList[ControlFactoryList.USER.ordinal()]).getUser(), toDay));
+		
+		if (ss == null) {
+			System.out.println("오늘 자습을 신청한 기록이 없어 삭제를 할수없습니다.");
+				return;
+		}
+		
+		if(((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()]).delete(((SelfStudyControl) controlList[ControlFactoryList.SELF_STUDY.ordinal()]).searchTodaySelfStudy(((UserControl)controlList[ControlFactoryList.USER.ordinal()]).getUser(), toDay))) {
+			System.out.println("삭제에 성공하였습니다.");
+		} else {
+			System.out.println("삭제에 실패하였습니다.");
+		}
 		System.out.println("======================================");
 	}
 	

@@ -52,12 +52,12 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
     <fullyQualifiedTypeName name="java.sql.Time"/>
-    <fullyQualifiedTypeName name="kh.study.cjy.model.SelfStudy"/>
-    <fullyQualifiedTypeName name="kh.study.cjy.control.SelfStudyControl"/>
     <fullyQualifiedTypeName name="java.lang.String"/>
     <fullyQualifiedTypeName name="kh.study.cjy.control.ClassRoomControl"/>
     <fullyQualifiedTypeName name="kh.study.cjy.model.User"/>
-    <fullyQualifiedTypeName name="kh.study.cjy.control.UserControl"/>
     <fullyQualifiedTypeName name="kh.study.cjy.model.Teacher"/>
     <fullyQualifiedTypeName name="kh.study.cjy.model.Student"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.UserControl"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.model.SelfStudy"/>
+    <fullyQualifiedTypeName name="kh.study.cjy.control.SelfStudyControl"/>
 </qualifiedTypeNameHistroy>

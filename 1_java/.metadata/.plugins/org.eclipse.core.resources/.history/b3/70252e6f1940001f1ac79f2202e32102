@@ -80,17 +80,4 @@ public class SelfStudyDao extends Functional{
 
 		return returnValue;
 	}
-	
-	/*
-	 * User Table Data Delete
-	 */
-	public boolean deleteSelfStudy(SelfStudy selfStudy) {
-		boolean returnValue = false;
-
-		if (CallSqlOther(DataSource.Connect(), "Delete from SelfStudy Where student_id = " + selfStudy.getStudentId() + ";") > 0) {
-			returnValue = true;
-		}
-
-		return returnValue;
-	}
 }

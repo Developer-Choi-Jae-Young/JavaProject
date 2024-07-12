@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="st ="/>
+		<item key="selection" value="UserControl)controlList[ControlFactoryList.SELF_STUDY"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="UserControl)controlList[ControlFactoryList.SELF_STUDY"/>
+			<item value="selectFromDate"/>
 			<item value="st ="/>
 			<item value="st"/>
 			<item value="printTodaySelfStudySchdule"/>
@@ -21,8 +23,6 @@
 			<item value="Integer"/>
 			<item value="로그아웃"/>
 			<item value="uc."/>
-			<item value="uc.select"/>
-			<item value="uc"/>
 		</list>
 		<list key="replacehistory">
 			<item value="((UserControl)controlList[ControlFactoryList.USER.ordinal()])."/>

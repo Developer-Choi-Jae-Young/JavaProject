@@ -21,7 +21,7 @@ public class SelfStudyControl implements IControl<SelfStudy> {
 
 	@Override
 	public boolean delete(SelfStudy type) {
-		return ssd.deleteSelfStudy(type);
+		return false;
 	}
 	
 	public SelfStudy searchTodaySelfStudy(User u, String toDay) {
